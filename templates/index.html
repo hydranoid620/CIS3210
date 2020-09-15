@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="shortcut icon" href="#">
+		<title>CIS*3210 Lab 1</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="/css/cover.css" rel="stylesheet">
+		<link href="/css/clippy.css" rel="stylesheet">
+		<link href="/css/custom.css" rel="stylesheet">
+	</head>
+
+	<body>
+
+		<div class="site-wrapper">
+			<div class="site-wrapper-inner">
+				<div class="cover-container">
+
+					<div class="inner cover">
+						<h1 class="cover-heading">CIS*3210 Lab 1</h1>
+
+						<p class="lead">Click the button below to Get Artsy!</p>
+
+						<a href="#" id="artsy-button" class="btn btn-lg btn-info">GetArtsy</a>
+
+						<a href="#" id="alert-button" class="btn btn-lg btn-info">Alert!</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/clippy.min.js"></script>
+		<script src="/js/init.js"></script>
+
+		<script type="text/javascript">
+			clippy.load('Links', function(agent) {
+				// Do anything with the loaded agent
+				agent.show();
+				$("#artsy-button").on("click", function() {agent.play("GetArtsy")});
+			});
+		</script>
+	</body>
+
+	<footer class="page-footer font-small teal pt-4">
+		<div class="container-fluid text-center text-left">
+			<div class="row">
+				<div class="col-6 mb-0 mt-3">
+					<h5 class="text-uppercase font-weight-bold">Name</h5>
+					<p>Nicholas Rosati</p>
+				</div>
+				<hr class="clearfix w-100 d-md-none pb-3">
+				<div class="col-6 mb-0 mt-3">
+					<h5 class="text-uppercase font-weight-bold">Student Number</h5>
+					<p>1037025</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</html>
