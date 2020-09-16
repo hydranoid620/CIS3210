@@ -17,7 +17,5 @@ $(document).ready(function () {
 
         $("#stop-current-button").on("click", function() {agent.stopCurrent()});
         $("#stop-all-button").on("click", function() {agent.stop()});
-
-        console.log(agent.animations());
     });
 });
