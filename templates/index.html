@@ -20,19 +20,33 @@
 	</head>
 
 	<body>
-
 		<div class="site-wrapper">
 			<div class="site-wrapper-inner">
 				<div class="cover-container">
-
 					<div class="inner cover">
 						<h1 class="cover-heading">CIS*3210 Lab 1</h1>
-
-						<p class="lead">Click the button below to Get Artsy!</p>
-
-						<a href="#" id="artsy-button" class="btn btn-lg btn-info">GetArtsy</a>
-
-						<a href="#" id="alert-button" class="btn btn-lg btn-info">Alert!</a>
+						<p class="lead">Click the buttons below to make Links do something!</p>
+						<div class="container">
+							<div class="row">
+								<a href="#" id="greeting-button" class="btn btn-lg btn-info col m-1">Greeting</a>
+								<a href="#" id="artsy-button" class="btn btn-lg btn-info col m-1">GetArtsy</a>
+								<a href="#" id="alert-button" class="btn btn-lg btn-info col m-1">Alert</a>
+							</div>
+							<div class="row">
+								<a href="#" id="wave-button" class="btn btn-lg btn-info col m-1">Wave</a>
+								<a href="#" id="save-button" class="btn btn-lg btn-info col m-1">Save</a>
+								<a href="#" id="print-button" class="btn btn-lg btn-info col m-1">Print</a>
+							</div>
+							<div class="row">
+								<a href="#" id="get-wizardy-button" class="btn btn-lg btn-info col m-1">Get Wizardy</a>
+								<a href="#" id="congratulate-button" class="btn btn-lg btn-info col m-1">Congratulate</a>
+								<a href="#" id="empty-trash-button" class="btn btn-lg btn-info col m-1">Empty Trash</a>
+							</div>
+							<div class="row">
+								<a href="#" id="stop-current-button" class="btn btn-lg btn-warning col m-1">Stop Current</a>
+								<a href="#" id="stop-all-button" class="btn btn-lg btn-danger col m-1">Stop All</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -42,25 +56,16 @@
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/clippy.min.js"></script>
 		<script src="/js/init.js"></script>
-
-		<script type="text/javascript">
-			clippy.load('Links', function(agent) {
-				// Do anything with the loaded agent
-				agent.show();
-				$("#artsy-button").on("click", function() {agent.play("GetArtsy")});
-			});
-		</script>
 	</body>
 
 	<footer class="page-footer font-small teal pt-4">
-		<div class="container-fluid text-center text-left">
+		<div class="container">
 			<div class="row">
-				<div class="col-6 mb-0 mt-3">
+				<div class="col-sm">
 					<h5 class="text-uppercase font-weight-bold">Name</h5>
 					<p>Nicholas Rosati</p>
 				</div>
-				<hr class="clearfix w-100 d-md-none pb-3">
-				<div class="col-6 mb-0 mt-3">
+				<div class="col-sm">
 					<h5 class="text-uppercase font-weight-bold">Student Number</h5>
 					<p>1037025</p>
 				</div>
