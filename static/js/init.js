@@ -11,11 +11,13 @@ $(document).ready(function () {
         $("#save-button").on("click", function() {agent.play("Save")});
         $("#print-button").on("click", function() {agent.play("Print")});
 
-        $("#get-wizardy-button").on("click", function() {agent.play("Get Wizardy")});
+        $("#get-wizardy-button").on("click", function() {agent.play("GetWizardy")});
         $("#congratulate-button").on("click", function() {agent.play("Congratulate")});
-        $("#empty-trash-button").on("click", function() {agent.play("Empty Trash")});
+        $("#empty-trash-button").on("click", function() {agent.play("EmptyTrash")});
 
         $("#stop-current-button").on("click", function() {agent.stopCurrent()});
         $("#stop-all-button").on("click", function() {agent.stop()});
+
+        console.log(agent.animations());
     });
 });
