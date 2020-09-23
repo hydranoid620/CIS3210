@@ -17,5 +17,8 @@ $(document).ready(function () {
 
         $("#stop-current-button").on("click", function() {agent.stopCurrent()});
         $("#stop-all-button").on("click", function() {agent.stop()});
+
+
+        console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
     });
 });
