@@ -4,6 +4,9 @@ $(document).ready(function () {
         $('#passwordforuser').val($(this).val());
     });
 
+    //Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+
     //JSONify the username and password text boxes and send to server
     $("#post-button").on("click", function () {
         let newUser = {
