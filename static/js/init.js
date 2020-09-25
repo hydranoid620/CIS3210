@@ -1,7 +1,12 @@
 $(document).ready(function () {
+    //Set event handler for when selected user is changed, show password
+    $("#userlist").change(function () {
+        $('#passwordforuser').text($(this).val());
+    });
+
     //JSONify the username and password text boxes and send to server
     $("#post-button").on("click", function () {
-        let object = {
+        let newUser = {
             'username': $("#username").val(),
             'password': $("#password").val()
         };
@@ -9,13 +14,13 @@ $(document).ready(function () {
         $.ajax({
             type: 'POST',
             url: 'user',
-            data: object,
-            success: function (data, status) {
+            data: newUser,
+            success: function () {
                 //TODO: Display success middle top of main screen
                 $('#username').val('');
                 $('#password').val('');
             },
-            dataType: "json"
+            dataType: "json",
         });
     });
 
@@ -35,11 +40,18 @@ $(document).ready(function () {
         });
     });
 
-    //Set event handler for when selected user is changed, show password
-    $("#userlist").change(function () {
-        $('#passwordforuser').text($(this).val());
+    $("#put-button").on("click", function () {
+        $.ajax({
+            url: '/user/' + $('#userlist option:selected').text(),
+            type: 'PUT',
+            data: {'newpassword': $("#newpassword").val()},
+            success: function (data) {
+                //Update displayed password
+                $('#passwordforuser').text($(this).val());
+            },
+            dataType: "text"
+        });
     });
-
 
         /*    $.ajax({
                 url: 'newurl',
