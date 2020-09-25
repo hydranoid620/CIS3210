@@ -1,8 +1,6 @@
 $(document).ready(function () {
     $("#post-button").on("click", function () {
         let object = {"message": "Hello from JavaScript!"}
-        console.log("Making POST request with object: \n" + JSON.stringify(object))
-
         $.ajax({
             type: "POST",
             url: "user",
@@ -10,7 +8,6 @@ $(document).ready(function () {
             success: function (data, status) {alert("Data: " + data.message + "\nStatus: " + status);},
             dataType: "json"
         })
-
     });
 
     $("#get-button").on("click", function () {
@@ -19,6 +16,22 @@ $(document).ready(function () {
             alert("Data: " + data.message + "\nStatus: " + status);
         });
     });
+
+/*    $.ajax({
+        url: 'newurl',
+        type: 'DELETE',
+        success: function(result) {
+            // Do something with the result
+        }
+    });*/
+
+/*    $.ajax({
+        url: 'url',
+        type: 'PUT',
+        success: function(response) {
+            //...
+        }
+    });*/
 
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
 });
