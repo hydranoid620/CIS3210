@@ -7,13 +7,13 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            type: "POST",
-            url: "user",
+            type: 'POST',
+            url: 'user',
             data: object,
             success: function (data, status) {
                 //TODO: Display success middle top of main screen
-                $('#username').empty();
-                $('#password').empty();
+                $('#username').val('');
+                $('#password').val('');
             },
             dataType: "json"
         });
@@ -22,8 +22,8 @@ $(document).ready(function () {
     //GET a list of users on the server
     $("#get-button").on("click", function () {
         $.ajax({
-            type: "GET",
-            url: "user",
+            type: 'GET',
+            url: 'user',
             success: function (data, status) {
                 //TODO: Display success middle top of main screen
                 $('#userlist').empty();
