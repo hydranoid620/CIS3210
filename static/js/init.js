@@ -1,7 +1,7 @@
 $(document).ready(function () {
     //Set event handler for when selected user is changed, show password
     $("#userlist").change(function () {
-        $('#passwordforuser').text($(this).val());
+        $('#passwordforuser').val($(this).val());
     });
 
     //JSONify the username and password text boxes and send to server
@@ -31,10 +31,14 @@ $(document).ready(function () {
             url: 'user',
             success: function (data, status) {
                 //TODO: Display success middle top of main screen
+                //Empty and populate the user list
                 $('#userlist').empty();
                 data.users.forEach(function (user) {
                     $('#userlist').append('<option value="'+ user.password +'">' + user.username + '</option>');
                 })
+
+                //Show password for default selected user
+                $('#passwordforuser').val($("#userlist").val())
             },
             dataType: "json"
         });
@@ -47,11 +51,12 @@ $(document).ready(function () {
             data: {'newpassword': $("#newpassword").val()},
             success: function () {
                 //Update displayed password
-                //TODO: show message saying item needs to be reselected
-                $('#passwordforuser').text($(this).val());
+                //TODO: show message saying list needs to get GET again and reselected
                 $('#newpassword').val('');
+                $('#passwordforuser').val('');
+                $('#userlist').empty();
             },
-            dataType: "text"
+            dataType: "json"
         });
     });
 
@@ -59,10 +64,14 @@ $(document).ready(function () {
         $.ajax({
             url: '/user/' + $('#userlist option:selected').text(),
             type: 'DELETE',
+            data: {},
             success: function () {
-                //Update displayed password
+                //TODO: Display warning saying you need to GET the list
+                $('#newpassword').val('');
+                $('#passwordforuser').val('');
+                $('#userlist').empty();
             },
-            dataType: "text"
+            dataType: "json"
         });
     });
 
