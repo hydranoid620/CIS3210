@@ -16,9 +16,9 @@ $(document).ready(function () {
             url: 'user',
             data: newUser,
             success: function () {
-                //TODO: Display success middle top of main screen
                 $('#username').val('');
                 $('#password').val('');
+                $('#message').text('User added to the user list. Press the GET button to get the list.');
             },
             dataType: "json",
         });
@@ -30,7 +30,6 @@ $(document).ready(function () {
             type: 'GET',
             url: 'user',
             success: function (data, status) {
-                //TODO: Display success middle top of main screen
                 //Empty and populate the user list
                 $('#userlist').empty();
                 data.users.forEach(function (user) {
@@ -39,6 +38,11 @@ $(document).ready(function () {
 
                 //Show password for default selected user
                 $('#passwordforuser').val($("#userlist").val())
+
+                $('#message').text('' +
+                    'User list received from server.\nSelect a user in the User List dropdown, ' +
+                    'then you can either edit a user\'s password with the field under the PUT button then press the PUT button, or ' +
+                    'you can also delete a user by pressing the DELETE button');
             },
             dataType: "json"
         });
@@ -51,10 +55,11 @@ $(document).ready(function () {
             data: {'newpassword': $("#newpassword").val()},
             success: function () {
                 //Update displayed password
-                //TODO: show message saying list needs to get GET again and reselected
                 $('#newpassword').val('');
                 $('#passwordforuser').val('');
                 $('#userlist').empty();
+
+                $('#message').text('User edited. Press the GET button to get the updated user list.');
             },
             dataType: "json"
         });
@@ -70,6 +75,8 @@ $(document).ready(function () {
                 $('#newpassword').val('');
                 $('#passwordforuser').val('');
                 $('#userlist').empty();
+
+                $('#message').text('User deleted. Press the GET button to get the updated user list.');
             },
             dataType: "json"
         });
