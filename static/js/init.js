@@ -45,29 +45,27 @@ $(document).ready(function () {
             url: '/user/' + $('#userlist option:selected').text(),
             type: 'PUT',
             data: {'newpassword': $("#newpassword").val()},
-            success: function (data) {
+            success: function () {
                 //Update displayed password
+                //TODO: show message saying item needs to be reselected
                 $('#passwordforuser').text($(this).val());
+                $('#newpassword').val('');
             },
             dataType: "text"
         });
     });
 
-        /*    $.ajax({
-                url: 'newurl',
-                type: 'DELETE',
-                success: function(result) {
-                    // Do something with the result
-                }
-            });*/
+    $("#delete-button").on("click", function () {
+        $.ajax({
+            url: '/user/' + $('#userlist option:selected').text(),
+            type: 'DELETE',
+            success: function () {
+                //Update displayed password
+            },
+            dataType: "text"
+        });
+    });
 
-    /*    $.ajax({
-            url: 'url',
-            type: 'PUT',
-            success: function(response) {
-                //...
-            }
-        });*/
 
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
 });
