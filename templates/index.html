@@ -29,6 +29,36 @@
 							<div class="row">
 								<a href="#" id="post-button" class="btn btn-lg btn-info col m-1">POST</a>
 								<a href="#" id="get-button" class="btn btn-lg btn-info col m-1">GET</a>
+								<a href="#" id="put-button" class="btn btn-lg btn-info col m-1">PUT</a>
+								<a href="#" id="delete-button" class="btn btn-lg btn-info col m-1">DELETE</a>
+							</div>
+							<div class="row">
+
+								<!--New user username field-->
+								<div class="form-group col-3 text-left">
+									<label for="username">Name:</label>
+									<input type="text" class="form-control" id="username" />
+								</div>
+
+								<!--Displays list of added users AFTER being GET'd from server-->
+								<div class="form-group col-3 text-left">
+									<label for="userlist">User List</label>
+									<select id="userlist" class="form-control"></select>
+								</div>
+							</div>
+							<div class="row">
+
+								<!--Password field for a new user-->
+								<div class="form-group col-3 text-left">
+									<label for="password">Password:</label>
+									<input type="password" class="form-control" id="password" />
+								</div>
+
+								<!--Displays the password for the selected user-->
+								<div class="form-group col-3 text-left">
+									<label for="passwordforuser">User Password</label>
+									<textarea disabled type="text" contenteditable="false" rows="1" id="passwordforuser" class="form-control"></textarea>
+								</div>
 							</div>
 						</div>
 					</div>
