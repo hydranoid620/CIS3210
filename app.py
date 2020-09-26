@@ -52,7 +52,7 @@ def edit_user(username):
         return {'message': 'OK'}, 200
 
 
-# Necessary function cause the userlist is an array of JSON objects
+# Necessary function because the user_list is an array of JSON objects
 def find_in_json_array(username):
     for i in range(0, len(user_list)):
         if user_list[i]['username'] == username:
