@@ -47,7 +47,8 @@ def edit_user(username):
     if request.method == 'PUT':
         db = get_db()
         try:
-            db.cursor().execute(f"UPDATE users SET password='{request.form['password']}' WHERE username='{username}'")  # TODO: INPUT SANITIZATION
+            sql = "UPDATE users SET password=%s WHERE username=%s"
+            db.cursor().execute(sql, (request.form['password'], username))
             db.commit()
             return {'message': 'OK'}, 200
         except MySQLdb.Error as e:
@@ -61,7 +62,8 @@ def edit_user(username):
     elif request.method == 'DELETE':
         db = get_db()
         try:
-            db.cursor().execute(f"DELETE FROM users WHERE username='{username}'")  # TODO: INPUT SANITIZATION
+            sql = "DELETE FROM users WHERE username=%s"
+            db.cursor().execute(sql, (username,))
             db.commit()
             return {'message': 'OK'}, 200
         except MySQLdb.Error as e:
@@ -76,7 +78,8 @@ def edit_user(username):
 def register():
     db = get_db()
     try:
-        db.cursor().execute(f"INSERT INTO users VALUES ('{request.form['username']}', '{request.form['password']}')")  # TODO: INPUT SANITIZATION
+        sql = "INSERT INTO users VALUES (%s, %s)"
+        db.cursor().execute(sql, (request.form['username'], request.form['password']))
         db.commit()
         return {'message': 'OK'}, 200
     except MySQLdb.Error as e:
@@ -89,7 +92,8 @@ def login():
     db = get_db()
     cursor = db.cursor()
     try:
-        cursor.execute(f"SELECT * FROM users WHERE username='{request.form['username']}' AND password='{request.form['password']}'")  # TODO: INPUT SANITIZATION
+        sql = "SELECT * FROM users WHERE username=%s AND password=%s"
+        cursor.execute(sql, (request.form['username'], request.form['password']))
         if len(cursor.fetchall()) > 0:
             return {'message': 'OK'}, 200
         else:
