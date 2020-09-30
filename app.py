@@ -1,4 +1,6 @@
 from flask import Flask, render_template, jsonify, request
+import MySQLdb
+import MySQLdb.cursors
 
 app = Flask(__name__, static_url_path='')
 
@@ -6,6 +8,19 @@ app = Flask(__name__, static_url_path='')
 
 
 user_list = []
+
+
+def get_db():
+    db = MySQLdb.connect(host='dursley.socs.uoguelph.ca',
+                         user='nrosati',
+                         passwd='1037025',
+                         db='nrosati')
+    db.autocommit(True)
+    return db
+
+
+# Makes sure the table exists and has the right columns
+get_db().cursor().execute('CREATE TABLE IF NOT EXISTS `users` (`name` TINYTEXT, `password` TINYTEXT)')
 
 
 @app.route('/')

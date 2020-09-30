@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="shortcut icon" href="#">
+		<title>CIS*3210 Lab 1</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="/css/cover.css" rel="stylesheet">
+		<link href="/css/custom.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div class="site-wrapper">
+			<div class="site-wrapper-inner">
+				<div class="cover-container">
+					<div class="inner cover">
+						<h1 class="cover-heading">CIS*3210 Lab 3</h1>
+						<p class="lead">Click the buttons below to make some requests!</p>
+						<h3 class="lead text-warning" id="message"></h3>
+						<div class="container">
+							<div class="row">
+								<a href="#" id="post-button" class="btn btn-lg btn-info col m-1" data-toggle="tooltip" data-placement="top" title="Add a new user to the server's user list">POST</a>
+								<a href="#" id="get-button" class="btn btn-lg btn-info col m-1" data-toggle="tooltip" data-placement="top" title="Gets the user list from the server">GET</a>
+								<a href="#" id="put-button" class="btn btn-lg btn-info col m-1" data-toggle="tooltip" data-placement="top" title="Updates a selected user's password">PUT</a>
+								<a href="#" id="delete-button" class="btn btn-lg btn-info col m-1" data-toggle="tooltip" data-placement="top" title="Deletes a selected user">DELETE</a>
+							</div>
+							<div class="row">
+								<!--New user username field-->
+								<div class="form-group col-3 text-left">
+									<label for="username">Username:</label>
+									<input type="text" class="form-control" id="username" />
+								</div>
+
+								<!--Displays list of added users AFTER being GET'd from server-->
+								<div class="form-group col-3 text-left">
+									<label for="userlist">User List</label>
+									<select id="userlist" class="form-control"></select>
+								</div>
+
+								<!--Allows the user to change the password for the selected user-->
+								<div class="form-group col-3 text-left">
+									<label for="newpassword">New Password</label>
+									<input type="text" class="form-control" id="newpassword" />
+								</div>
+							</div>
+							<div class="row">
+								<!--Password field for a new user-->
+								<div class="form-group col-3 text-left">
+									<label for="password">Password:</label>
+									<input type="password" class="form-control" id="password" />
+								</div>
+
+								<!--Displays the password for the selected user-->
+								<div class="form-group col-3 text-left">
+									<label for="passwordforuser">User Password</label>
+									<input disabled type="text" id="passwordforuser" class="form-control" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/init.js"></script>
+	</body>
+
+	<footer class="page-footer font-small teal pt-4">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm">
+					<h5 class="text-uppercase font-weight-bold">Name</h5>
+					<p>Nicholas Rosati</p>
+				</div>
+				<div class="col-sm">
+					<h5 class="text-uppercase font-weight-bold">Student Number</h5>
+					<p>1037025</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</html>
