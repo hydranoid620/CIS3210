@@ -8,7 +8,7 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 		<link rel="shortcut icon" href="#">
-		<title>CIS*3210 Lab 1</title>
+		<title>CIS*3210 Lab 3</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -27,31 +27,35 @@
 						<p class="lead">Get started by registering a user!</p>
 						<h3 class="lead text-warning" id="message"></h3>
 						<div class="container">
-							<div class="row">
+							<div class="row mb-1">
 								<!--New user field-->
-								<input type="text" class="form-control col-3 m-1" id="new-username" placeholder="Username"/>
-								<input type="password" class="form-control col-3 m-1" id="new-password" placeholder="Password"/>
+								<input type="text" class="form-control col-3 mr-1" id="new-username" placeholder="Username"/>
+								<input type="password" class="form-control col-3 mr-1" id="new-password" placeholder="Password"/>
+
+								<select id="user_list" class="form-control col-3 offset-2"></select>
 							</div>
-							<div class="row">
+							<div class="row mb-5">
 								<!--Register or login buttons-->
-								<a href="#" id="register-button" class="btn-lg btn-info col-3 m-1" data-placement="top" title="Register's a user">Register</a>
-								<a href="#" id="login-button" class="btn-lg btn-info col-3 m-1" data-placement="top" title="Attempts to log a user in">Login</a>
+								<a href="#" id="register-button" class="btn-lg btn-info col-3 mr-1" data-placement="top" title="Register's a user">Register</a>
+								<a href="#" id="login-button" class="btn-lg btn-info col-3 mr-1" data-placement="top" title="Attempts to log a user in">Login</a>
+
+								<a href="#" id="get-users-button" class="btn-lg btn-info col-3 mr-1 offset-2" data-placement="top" title="Gets the users list">Get Users</a>
 							</div>
-							<hr />
-							<div class="row">
-								<input type="text" class="form-control col-3 m-1" id="update-username" placeholder="Existing Username"/>
-								<input type="password" class="form-control col-3 m-1" id="update-password" placeholder="New Password"/>
+
+							<div class="row mb-1">
+								<input type="text" class="form-control col-3 mr-1" id="update-username" placeholder="Existing Username"/>
+								<input type="password" class="form-control col-3 mr-1" id="update-password" placeholder="New Password"/>
 							</div>
-							<div class="row">
-								<a href="#" id="update-password-button" class="btn-lg btn-info col-3 m-1" data-placement="top" title="Updates a user's password">Update Password</a>
+							<div class="row mb-5">
+								<a href="#" id="update-password-button" class="btn-lg btn-info col-3" data-placement="top" title="Updates a user's password">Update Password</a>
 							</div>
-							<hr />
-							<div class="row">
+
+							<div class="row mb-1">
 								<!--Username field-->
-								<input type="text" class="form-control col-3 m-1" id="delete-username" placeholder="Existing Username"/>
+								<input type="text" class="form-control col-3" id="delete-username" placeholder="Existing Username"/>
 							</div>
 							<div class="row">
-								<a href="#" id="delete-button" class="btn-lg btn-info col-3 m-1" data-placement="top" title="Register's a user">Delete User</a>
+								<a href="#" id="delete-button" class="btn-lg btn-danger col-3" data-placement="top" title="Register's a user">Delete User</a>
 							</div>
 						</div>
 					</div>

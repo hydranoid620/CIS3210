@@ -759,7 +759,7 @@
       <Charset>utf8mb4</Charset>
     </collation>
     <user id="239" parent="1" name="nrosati">
-      <Host>131.104.%.%</Host>
+      <Host>10.%.%.%</Host>
       <ObjectGrants>ALL PRIVILEGES|nrosati:null
 </ObjectGrants>
     </user>
