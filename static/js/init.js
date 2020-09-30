@@ -1,85 +1,116 @@
 $(document).ready(function () {
-    //Set event handler for when selected user is changed, show password
-    $("#userlist").change(function () {
-        $('#passwordforuser').val($(this).val());
-    });
 
-    //Initialize tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-
-    //JSONify the username and password text boxes and send to server
-    $("#post-button").on("click", function () {
-        let newUser = {
-            'username': $("#username").val(),
-            'password': $("#password").val()
-        };
-
+    //Register a new user
+    $("#register-button").on("click", function () {
         $.ajax({
             type: 'POST',
-            url: 'user',
-            data: newUser,
+            url: 'register',
+            data: {
+                'username': $("#username").val(),
+                'password': $("#password").val()
+            },
             success: function () {
                 $('#username').val('');
                 $('#password').val('');
-                $('#message').text('User added to the user list. Press the GET button to get the list.');
+                $("#get-users-button").click(); //Updates the user list
+                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User added to the user list. User list updated.');
+            },
+            error: function (jqXHR) {
+                $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error registering the user. Check the console for details.');
+                console.log(jqXHR.responseText);
             },
             dataType: "json",
         });
     });
 
-    //GET a list of users on the server
-    $("#get-button").on("click", function () {
+    //'Login' a user
+    $("#login-button").on("click", function () {
+        $.ajax({
+            type: 'POST',
+            url: 'login',
+            data: {
+                'username': $("#username").val(),
+                'password': $("#password").val()
+            },
+            success: function () {
+                $('#username').val('');
+                $('#password').val('');
+                $("#get-users-button").click(); //Updates the user list
+                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User validated.');
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 404) {
+                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('Could not find a user with that username. Try registering instead.');
+                } else {
+                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
+                    console.log(jqXHR.responseText);
+                }
+            },
+            dataType: "json",
+        });
+    });
+
+    //Gets the list of existing users
+    $("#get-users-button").on("click", function () {
         $.ajax({
             type: 'GET',
-            url: 'user',
-            success: function (data, status) {
+            url: 'users',
+            success: function (data) {
                 //Empty and populate the user list
-                $('#userlist').empty();
+                $('#user_list').empty();
                 data.users.forEach(function (user) {
-                    $('#userlist').append('<option value="'+ user.password +'">' + user.username + '</option>');
+                    $('#user_list').append('<option value="'+ user.username +'">' + user.username + '</option>');
                 })
 
-                //Show password for default selected user
-                $('#passwordforuser').val($("#userlist").val())
-
-                $('#message').text('' +
-                    'User list received from server.\nSelect a user in the User List dropdown, ' +
-                    'then you can either edit a user\'s password with the field under the PUT button then press the PUT button, or ' +
-                    'you can also delete a user by pressing the DELETE button');
+                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User list updated');
             },
             dataType: "json"
         });
     });
 
-    $("#put-button").on("click", function () {
+    //Attempts to update the given user with the new password
+    $("#update-password-button").on("click", function () {
         $.ajax({
-            url: '/user/' + $('#userlist option:selected').text(),
+            url: 'users/' + $('#update-username').val(),
             type: 'PUT',
-            data: {'newpassword': $("#newpassword").val()},
+            data: {'password': $("#update-password").val()},
             success: function () {
-                //Update displayed password
-                $('#newpassword').val('');
-                $('#passwordforuser').val('');
-                $('#userlist').empty();
+                //Clear input fields
+                $('#update-username').val('');
+                $('#update-password').val('');
 
-                $('#message').text('User edited. Press the GET button to get the updated user list.');
+                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User password updated.');//Display status message
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 404) {
+                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('Could not find a user with that username to update.');
+                } else {
+                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
+                    console.log(jqXHR.responseText);
+                }
             },
             dataType: "json"
         });
     });
 
+    //Attempt to delete the user with the entered username
     $("#delete-button").on("click", function () {
         $.ajax({
-            url: '/user/' + $('#userlist option:selected').text(),
+            url: 'users/' + $('#delete-username').val(),
             type: 'DELETE',
             data: {},
             success: function () {
-                //TODO: Display warning saying you need to GET the list
-                $('#newpassword').val('');
-                $('#passwordforuser').val('');
-                $('#userlist').empty();
-
-                $('#message').text('User deleted. Press the GET button to get the updated user list.');
+                $("#get-users-button").click(); //Updates the user list
+                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User deleted. User list updated.'); //Display status message
+            },
+            error: function (jqXHR) {
+                //Display status message
+                if (jqXHR.status === 404) {
+                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('Could not find a user with that username to delete.');
+                } else {
+                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
+                    console.log(jqXHR.responseText);
+                }
             },
             dataType: "json"
         });
