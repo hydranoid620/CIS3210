@@ -1,4 +1,5 @@
 $(function () {
+    //TODO: INPUT SANITIZATION
 
     //Register a new user
     $("#register-button").on("click", function () {
@@ -12,8 +13,7 @@ $(function () {
             success: function () {
                 $('#username').val('');
                 $('#password').val('');
-                $("#get-users-button").trigger("click"); //Updates the user list
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User added to the user list. User list updated.');
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User added to the user list. User list must be updated.');
             },
             error: function (jqXHR) {
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error registering the user. Check the console for details.');
@@ -35,7 +35,6 @@ $(function () {
             success: function () {
                 $('#username').val('');
                 $('#password').val('');
-                $("#get-users-button").trigger("click"); //Updates the user list
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User validated.');
             },
             error: function (jqXHR) {
@@ -58,11 +57,11 @@ $(function () {
             success: function (data) {
                 //Empty and populate the user list
                 $('#user_list').empty();
-                data["users"].forEach(function (user) { //TODO: Test the indexer, it should work but idk
+                data.forEach(function (user) { //TODO: Test the indexer, it should work but idk
                     $('#user_list').append('<option value="'+ user.username +'">' + user.username + '</option>');
                 })
 
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User list updated');
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User list updated.');
             },
             dataType: "json"
         });
@@ -100,8 +99,7 @@ $(function () {
             type: 'DELETE',
             data: {},
             success: function () {
-                $("#get-users-button").trigger("click"); //Updates the user list
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User deleted. User list updated.'); //Display status message
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User deleted. User list must be updated.'); //Display status message
             },
             error: function (jqXHR) {
                 //Display status message

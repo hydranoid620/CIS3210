@@ -782,7 +782,7 @@
       <Position>4</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="246" parent="241" name="name">
+    <column id="246" parent="241" name="username">
       <Position>1</Position>
       <DataType>tinytext|0s</DataType>
     </column>
