@@ -16,8 +16,15 @@ def get_db():
     return db
 
 
-# Makes sure the table exists and has the right columns
-get_db().cursor().execute('CREATE TABLE IF NOT EXISTS `users` (`name` TINYTEXT, `password` TINYTEXT)')
+def check_db_table():
+    # Makes sure the table exists and has the right columns
+    db = get_db()
+    db.cursor().execute('CREATE TABLE IF NOT EXISTS `users` (`name` TINYTEXT, `password` TINYTEXT)')
+    db.commit()
+    db.close()
+
+
+check_db_table()
 
 
 # Serves the main HTML page
@@ -29,15 +36,18 @@ def index(name=None):
 # General user information API endpoint
 @app.route('/users', methods=['GET'])
 def user():
+    db = get_db()
+    cursor = db.cursor()
     try:
         # Returns the list of users
-        cursor = get_db().cursor()
         cursor.execute('SELECT * FROM `users`')
         json_result = []
         for row in cursor.fetchall():
             json_result.append({'username': row[0], 'password': row[1]})
+        db.close()
         return jsonify(json_result), 200
     except MySQLdb.Error as e:
+        db.close()
         return jsonify(e.args), 500
 
 
@@ -50,12 +60,15 @@ def edit_user(username):
             sql = "UPDATE users SET password=%s WHERE username=%s"
             db.cursor().execute(sql, (request.form['password'], username))
             db.commit()
+            db.close()
             return {'message': 'OK'}, 200
         except MySQLdb.Error as e:
             db.rollback()
             if e.args[0] == 1054:  # If the supplied username was not found
+                db.close()
                 return jsonify(e.args), 404
             else:
+                db.close()
                 return jsonify(e.args), 500
 
     # Deletes a user from the database
@@ -65,12 +78,15 @@ def edit_user(username):
             sql = "DELETE FROM users WHERE username=%s"
             db.cursor().execute(sql, (username,))
             db.commit()
+            db.close()
             return {'message': 'OK'}, 200
         except MySQLdb.Error as e:
             db.rollback()
             if e.args[0] == 1054:  # If the supplied username was not found
+                db.close()
                 return jsonify(e.args), 404
             else:
+                db.close()
                 return jsonify(e.args), 500
 
 
@@ -81,9 +97,11 @@ def register():
         sql = "INSERT INTO users VALUES (%s, %s)"
         db.cursor().execute(sql, (request.form['username'], request.form['password']))
         db.commit()
+        db.close()
         return {'message': 'OK'}, 200
     except MySQLdb.Error as e:
         db.rollback()
+        db.close()
         return jsonify(e.args), 500
 
 
@@ -95,8 +113,10 @@ def login():
         sql = "SELECT * FROM users WHERE username=%s AND password=%s"
         cursor.execute(sql, (request.form['username'], request.form['password']))
         if len(cursor.fetchall()) > 0:
+            db.close()
             return {'message': 'OK'}, 200
         else:
-            return {'message': 'User not found'}, 404
+            db.close()
+        return {'message': 'User not found'}, 404
     except MySQLdb.Error as e:
         return jsonify(e.args), 500
