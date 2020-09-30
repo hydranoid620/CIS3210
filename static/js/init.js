@@ -1,14 +1,12 @@
 $(function () {
-    //TODO: INPUT SANITIZATION
-
     //Register a new user
     $("#register-button").on("click", function () {
         $.ajax({
             type: 'POST',
             url: 'register',
             data: {
-                'username': $("#username").val(),
-                'password': $("#password").val()
+                'username': $("#username").val(), //TODO: INPUT SANITIZATION
+                'password': $("#password").val() //TODO: INPUT SANITIZATION
             },
             success: function () {
                 $('#username').val('');
@@ -29,8 +27,8 @@ $(function () {
             type: 'POST',
             url: 'login',
             data: {
-                'username': $("#username").val(),
-                'password': $("#password").val()
+                'username': $("#username").val(), //TODO: INPUT SANITIZATION
+                'password': $("#password").val() //TODO: INPUT SANITIZATION
             },
             success: function () {
                 $('#username').val('');
@@ -72,7 +70,7 @@ $(function () {
         $.ajax({
             url: 'users/' + $('#update-username').val(),
             type: 'PUT',
-            data: {'password': $("#update-password").val()},
+            data: {'password': $("#update-password").val()}, //TODO: INPUT SANITIZATION
             success: function () {
                 //Clear input fields
                 $('#update-username').val('');
@@ -95,7 +93,7 @@ $(function () {
     //Attempt to delete the user with the entered username
     $("#delete-button").on("click", function () {
         $.ajax({
-            url: 'users/' + $('#delete-username').val(),
+            url: 'users/' + $('#delete-username').val(), //TODO: INPUT SANITIZATION
             type: 'DELETE',
             data: {},
             success: function () {

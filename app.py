@@ -1,7 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import MySQLdb
 import MySQLdb.cursors
-from MySQLdb import OperationalError
 
 app = Flask(__name__, static_url_path='')
 
@@ -14,7 +13,6 @@ def get_db():
                          user='nrosati',
                          passwd='1037025',
                          db='nrosati')
-    # db.autocommit(True)
     return db
 
 
