@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
 
     //Register a new user
     $("#register-button").on("click", function () {
@@ -12,11 +12,11 @@ $(document).ready(function () {
             success: function () {
                 $('#username').val('');
                 $('#password').val('');
-                $("#get-users-button").click(); //Updates the user list
-                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User added to the user list. User list updated.');
+                $("#get-users-button").trigger("click"); //Updates the user list
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User added to the user list. User list updated.');
             },
             error: function (jqXHR) {
-                $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error registering the user. Check the console for details.');
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error registering the user. Check the console for details.');
                 console.log(jqXHR.responseText);
             },
             dataType: "json",
@@ -35,14 +35,14 @@ $(document).ready(function () {
             success: function () {
                 $('#username').val('');
                 $('#password').val('');
-                $("#get-users-button").click(); //Updates the user list
-                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User validated.');
+                $("#get-users-button").trigger("click"); //Updates the user list
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User validated.');
             },
             error: function (jqXHR) {
                 if (jqXHR.status === 404) {
-                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('Could not find a user with that username. Try registering instead.');
+                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username. Try registering instead.');
                 } else {
-                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
+                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
                     console.log(jqXHR.responseText);
                 }
             },
@@ -58,11 +58,11 @@ $(document).ready(function () {
             success: function (data) {
                 //Empty and populate the user list
                 $('#user_list').empty();
-                data.users.forEach(function (user) {
+                data["users"].forEach(function (user) { //TODO: Test the indexer, it should work but idk
                     $('#user_list').append('<option value="'+ user.username +'">' + user.username + '</option>');
                 })
 
-                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User list updated');
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User list updated');
             },
             dataType: "json"
         });
@@ -79,13 +79,13 @@ $(document).ready(function () {
                 $('#update-username').val('');
                 $('#update-password').val('');
 
-                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User password updated.');//Display status message
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User password updated.');//Display status message
             },
             error: function (jqXHR) {
                 if (jqXHR.status === 404) {
-                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('Could not find a user with that username to update.');
+                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username to update.');
                 } else {
-                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
+                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
                     console.log(jqXHR.responseText);
                 }
             },
@@ -100,15 +100,15 @@ $(document).ready(function () {
             type: 'DELETE',
             data: {},
             success: function () {
-                $("#get-users-button").click(); //Updates the user list
-                $('#message').removeClass('text-success', 'text-warning').addClass('text-success').text('User deleted. User list updated.'); //Display status message
+                $("#get-users-button").trigger("click"); //Updates the user list
+                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User deleted. User list updated.'); //Display status message
             },
             error: function (jqXHR) {
                 //Display status message
                 if (jqXHR.status === 404) {
-                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('Could not find a user with that username to delete.');
+                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username to delete.');
                 } else {
-                    $('#message').removeClass('text-success', 'text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
+                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
                     console.log(jqXHR.responseText);
                 }
             },
