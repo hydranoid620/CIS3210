@@ -1,86 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="shortcut icon" href="#">
-		<title>CIS*3210 Lab 3</title>
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta content="" name="description">
+        <meta content="" name="author">
+        <link href="#" rel="shortcut icon">
+        <title>CIS*3210 Lab 3</title>
 
-		<!-- Bootstrap core CSS -->
-		<link href="/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-		<!-- Custom styles for this template -->
-		<link href="/css/cover.css" rel="stylesheet">
-		<link href="/css/custom.css" rel="stylesheet">
-	</head>
+        <!-- Custom styles for this template -->
+        <link href="/css/cover.css" rel="stylesheet">
+        <link href="/css/custom.css" rel="stylesheet">
+    </head>
 
-	<body>
-		<div class="site-wrapper">
-			<div class="site-wrapper-inner">
-				<div class="container-fluid">
-					<div class="inner cover">
-						<h1 class="cover-heading">CIS*3210 Lab 3</h1>
-						<p class="lead">Get started by registering a user!</p>
-						<h3 class="lead mb-4 mt-3" id="message"></h3>
-						<div class="container">
-							<div class="row mb-1">
-								<!--New or existing user field-->
-								<input type="text" class="form-control col-3 mr-1" id="username" placeholder="Username"/>
-								<input type="password" class="form-control col-3 mr-1" id="new-password" placeholder="Password"/>
+    <body>
+        <div class="site-wrapper">
+            <div class="site-wrapper-inner">
+                <div class="container-fluid">
+                    <div class="inner cover">
+                        <h1 class="cover-heading">CIS*3210 Lab 3</h1>
+                        <p class="lead">Get started by registering a user!</p>
+                        <h3 class="lead mb-4 mt-3" id="message"></h3>
+                        <div class="container">
+                            <div class="row mb-1">
+                                <!--New or existing user field-->
+                                <input class="form-control col-3 mr-1" id="username" placeholder="Username" type="text"/>
+                                <input class="form-control col-3 mr-1" id="new-password" placeholder="Password" type="password"/>
 
-								<select id="user_list" class="form-control col-3 offset-2"></select>
-							</div>
-							<div class="row mb-5">
-								<!--Register or login buttons-->
-								<a href="#" id="register-button" class="btn-lg btn-info col-3 mr-1" data-placement="top" title="Register's a user">Register</a>
-								<a href="#" id="login-button" class="btn-lg btn-info col-3 mr-1" data-placement="top" title="Attempts to log a user in">Login</a>
+                                <select class="form-control col-3 offset-2" id="user_list"></select>
+                            </div>
+                            <div class="row mb-5">
+                                <!--Register or login buttons-->
+                                <a class="btn-lg btn-info col-3 mr-1" data-placement="top" href="#" id="register-button" title="Register's a user">Register</a>
+                                <a class="btn-lg btn-info col-3 mr-1" data-placement="top" href="#" id="login-button" title="Attempts to log a user in">Login</a>
 
-								<a href="#" id="get-users-button" class="btn-lg btn-info col-3 mr-1 offset-2" data-placement="top" title="Gets the users list">Get Users</a>
-							</div>
+                                <a class="btn-lg btn-info col-3 mr-1 offset-2" data-placement="top" href="#" id="get-users-button" title="Gets the users list">Get Users</a>
+                            </div>
 
-							<div class="row mb-1">
-								<input type="text" class="form-control col-3 mr-1" id="update-username" placeholder="Username"/>
-								<input type="password" class="form-control col-3 mr-1" id="update-password" placeholder="New Password"/>
-							</div>
-							<div class="row mb-5">
-								<a href="#" id="update-password-button" class="btn-lg btn-info col-3" data-placement="top" title="Updates a user's password">Update Password</a>
-							</div>
+                            <div class="row mb-1">
+                                <input class="form-control col-3 mr-1" id="update-username" placeholder="Username" type="text"/>
+                                <input class="form-control col-3 mr-1" id="update-password" placeholder="New Password" type="password"/>
+                            </div>
+                            <div class="row mb-5">
+                                <a class="btn-lg btn-info col-3" data-placement="top" href="#" id="update-password-button" title="Updates a user's password">Update Password</a>
+                            </div>
 
-							<div class="row mb-1">
-								<!--Username field-->
-								<input type="text" class="form-control col-3" id="delete-username" placeholder="Existing Username"/>
-							</div>
-							<div class="row">
-								<a href="#" id="delete-button" class="btn-lg btn-danger col-3" data-placement="top" title="Register's a user">Delete User</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                            <div class="row mb-1">
+                                <!--Username field-->
+                                <input class="form-control col-3" id="delete-username" placeholder="Existing Username" type="text"/>
+                            </div>
+                            <div class="row">
+                                <a class="btn-lg btn-danger col-3" data-placement="top" href="#" id="delete-button" title="Register's a user">Delete User</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<script src="/js/jquery.min.js"></script>
-		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/init.js"></script>
-	</body>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/init.js"></script>
+    </body>
 
-	<footer class="page-footer font-small teal pt-4">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm">
-					<h5 class="text-uppercase font-weight-bold">Name</h5>
-					<p>Nicholas Rosati</p>
-				</div>
-				<div class="col-sm">
-					<h5 class="text-uppercase font-weight-bold">Student Number</h5>
-					<p>1037025</p>
-				</div>
-			</div>
-		</div>
-	</footer>
+    <footer class="page-footer font-small teal pt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <h5 class="text-uppercase font-weight-bold">Name</h5>
+                    <p>Nicholas Rosati</p>
+                </div>
+                <div class="col-sm">
+                    <h5 class="text-uppercase font-weight-bold">Student Number</h5>
+                    <p>1037025</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </html>
