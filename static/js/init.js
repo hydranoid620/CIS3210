@@ -5,8 +5,8 @@ $(function () {
             type: 'POST',
             url: 'register',
             data: {
-                'username': $("#username").val(), //TODO: INPUT SANITIZATION
-                'password': $("#password").val() //TODO: INPUT SANITIZATION
+                'username': $("#username").val(),
+                'password': $("#password").val()
             },
             success: function () {
                 $('#username').val('');
@@ -27,8 +27,8 @@ $(function () {
             type: 'POST',
             url: 'login',
             data: {
-                'username': $("#username").val(), //TODO: INPUT SANITIZATION
-                'password': $("#password").val() //TODO: INPUT SANITIZATION
+                'username': $("#username").val(),
+                'password': $("#password").val()
             },
             success: function () {
                 $('#username').val('');
@@ -55,7 +55,7 @@ $(function () {
             success: function (data) {
                 //Empty and populate the user list
                 $('#user_list').empty();
-                data.forEach(function (user) { //TODO: Test the indexer, it should work but idk
+                data.forEach(function (user) {
                     $('#user_list').append('<option value="'+ user.username +'">' + user.username + '</option>');
                 })
 
@@ -70,7 +70,7 @@ $(function () {
         $.ajax({
             url: 'users/' + $('#update-username').val(),
             type: 'PUT',
-            data: {'password': $("#update-password").val()}, //TODO: INPUT SANITIZATION
+            data: {'password': $("#update-password").val()},
             success: function () {
                 //Clear input fields
                 $('#update-username').val('');
@@ -93,7 +93,7 @@ $(function () {
     //Attempt to delete the user with the entered username
     $("#delete-button").on("click", function () {
         $.ajax({
-            url: 'users/' + $('#delete-username').val(), //TODO: INPUT SANITIZATION
+            url: 'users/' + $('#delete-username').val(),
             type: 'DELETE',
             data: {},
             success: function () {
