@@ -61,7 +61,7 @@ def edit_user(username):
             db.cursor().execute(sql, (request.form['password'], username))
             db.commit()
             db.close()
-            return {'message': 'OK'}, 200
+            return jsonify({'message': 'OK'}), 200
         except MySQLdb.Error as e:
             db.rollback()
             if e.args[0] == 1054:  # If the supplied username was not found
@@ -79,7 +79,7 @@ def edit_user(username):
             db.cursor().execute(sql, (username,))
             db.commit()
             db.close()
-            return {'message': 'OK'}, 200
+            return jsonify({'message': 'OK'}), 200
         except MySQLdb.Error as e:
             db.rollback()
             if e.args[0] == 1054:  # If the supplied username was not found
@@ -98,7 +98,7 @@ def register():
         db.cursor().execute(sql, (request.form['username'], request.form['password']))
         db.commit()
         db.close()
-        return {'message': 'OK'}, 200
+        return jsonify({'message': 'OK'}), 200
     except MySQLdb.Error as e:
         db.rollback()
         db.close()
@@ -114,7 +114,7 @@ def login():
         cursor.execute(sql, (request.form['username'], request.form['password']))
         if len(cursor.fetchall()) > 0:
             db.close()
-            return {'message': 'OK'}, 200
+            return jsonify({'message': 'OK'}), 200
         else:
             db.close()
         return {'message': 'User not found'}, 404
