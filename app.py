@@ -1,8 +1,9 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for, json
 import MySQLdb
 import MySQLdb.cursors
 
 app = Flask(__name__, static_url_path='')
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 # app.debug = True
@@ -107,16 +108,26 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    db = get_db()
-    cursor = db.cursor()
-    try:
-        sql = "SELECT * FROM users WHERE username=%s AND password=%s"
-        cursor.execute(sql, (request.form['username'], request.form['password']))
-        if len(cursor.fetchall()) > 0:
-            db.close()
-            return jsonify({'message': 'OK'}), 200
-        else:
-            db.close()
-        return {'message': 'User not found'}, 404
-    except MySQLdb.Error as e:
-        return jsonify(e.args), 500
+    session['username'] = request.form['username']
+    session['logged_in'] = True
+    return redirect(url_for('index'))
+    # db = get_db()
+    # cursor = db.cursor()
+    # try:
+    #     sql = "SELECT * FROM users WHERE username=%s AND password=%s"
+    #     cursor.execute(sql, (request.form['username'], request.form['password']))
+    #     if len(cursor.fetchall()) > 0:
+    #         db.close()
+    #         return jsonify({'message': 'OK'}), 200
+    #     else:
+    #         db.close()
+    #     return {'message': 'User not found'}, 404
+    # except MySQLdb.Error as e:
+    #     return jsonify(e.args), 500
+
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.pop('username', None)
+    session.pop('logged_in', None)
+    return redirect(url_for('index'))

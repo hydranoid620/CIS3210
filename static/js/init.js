@@ -1,41 +1,19 @@
 $(function () {
-    //Register a new user
-    $("#register-button").on("click", function () {
-        $.ajax({
-            type: 'POST',
-            url: 'register',
-            data: {
-                'username': $("#username").val(),
-                'password': $("#password").val()
-            },
-            success: function () {
-                $('#username').val('');
-                $('#password').val('');
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User added to the user list. User list must be updated.');
-            },
-            error: function (jqXHR) {
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error registering the user. Check the console for details.');
-                console.log(jqXHR.responseText);
-            },
-            dataType: "json",
-        });
-    });
-
-    //'Login' a user
-    $("#login-button").on("click", function () {
+    //Login or register a user
+    $("#submitLogin").on("click", function () {
         $.ajax({
             type: 'POST',
             url: 'login',
-            data: {
-                'username': $("#username").val(),
-                'password': $("#password").val()
-            },
+            data: {username: $("#usernameInput").val(), password: $("#passwordInput").val()},
             success: function () {
-                $('#username').val('');
-                $('#password').val('');
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User validated.');
             },
-            error: function (jqXHR) {
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 200) {
+                    location.reload();
+                    return;
+                }
+
                 if (jqXHR.status === 404) {
                     $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username. Try registering instead.');
                 } else {
@@ -43,7 +21,18 @@ $(function () {
                     console.log(jqXHR.responseText);
                 }
             },
-            dataType: "json",
+            dataType: 'json',
+        });
+    });
+
+    $("#logout").on("click", function() {
+        $.ajax({
+            type: 'GET',
+            url: 'logout',
+            dataType: 'json',
+            complete: function () {
+                location.reload();
+            }
         });
     });
 
@@ -61,7 +50,7 @@ $(function () {
 
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User list updated.');
             },
-            dataType: "json"
+            dataType: 'json'
         });
     });
 
@@ -86,7 +75,7 @@ $(function () {
                     console.log(jqXHR.responseText);
                 }
             },
-            dataType: "json"
+            dataType: 'json'
         });
     });
 
@@ -108,15 +97,15 @@ $(function () {
                     console.log(jqXHR.responseText);
                 }
             },
-            dataType: "json"
+            dataType: 'json'
         });
     });
 
 
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
-    console.log("I found that for input sanitization, since JSON things aren't directly executed, they dont really need to be sanitized. Also because it's on the client side, " +
-        "you can never really trust the client. So, my input sanitization is done all on server side since that's the domain I can trust. I found this website " +
-        "https://bobby-tables.com/python.html that explains what to do and not to do to have proper input sanitization. Basically, don't build the SQL query as a complete string " +
-        "and execute it, but rather send the query to the database in parts and let the database see each part individually.")
+    // console.log("I found that for input sanitization, since JSON things aren't directly executed, they dont really need to be sanitized. Also because it's on the client side, " +
+    //     "you can never really trust the client. So, my input sanitization is done all on server side since that's the domain I can trust. I found this website " +
+    //     "https://bobby-tables.com/python.html that explains what to do and not to do to have proper input sanitization. Basically, don't build the SQL query as a complete string " +
+    //     "and execute it, but rather send the query to the database in parts and let the database see each part individually.")
 });
 

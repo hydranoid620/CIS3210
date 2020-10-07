@@ -1,86 +1,91 @@
+<!-- Template from https://startbootstrap.com/templates/bare/ -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta content="IE=edge" http-equiv="X-UA-Compatible">
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
         <meta content="" name="description">
         <meta content="" name="author">
-        <link href="#" rel="shortcut icon">
-        <title>CIS*3210 Lab 3</title>
+
+        <title>CIS*3210</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Custom styles for this template -->
-        <link href="/css/cover.css" rel="stylesheet">
-        <link href="/css/custom.css" rel="stylesheet">
+        <link href="/css/bootstrap.css" rel="stylesheet">
     </head>
 
     <body>
-        <div class="site-wrapper">
-            <div class="site-wrapper-inner">
-                <div class="container-fluid">
-                    <div class="inner cover">
-                        <h1 class="cover-heading">CIS*3210 Lab 3</h1>
-                        <p class="lead">Get started by registering a user!</p>
-                        <h3 class="lead mb-4 mt-3" id="message"></h3>
-                        <div class="container">
-                            <div class="row mb-1">
-                                <!--New or existing user field-->
-                                <input class="form-control col-3 mr-1" id="username" placeholder="Username" type="text"/>
-                                <input class="form-control col-3 mr-1" id="password" placeholder="Password" type="password"/>
+        <!-- Navigation top bar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">CIS*3210</a>
+                <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarResponsive" data-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <!--Log in/log out button-->
+                        {% if session.logged_in %}
+                        <li class="nav-item active">
+                            <a class="nav-link" id="logout" href="#">Logout<span class="sr-only">(current)</span></a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-                                <select class="form-control col-3 offset-2" id="user_list"></select>
-                            </div>
-                            <div class="row mb-5">
-                                <!--Register or login buttons-->
-                                <a class="btn-lg btn-info col-3 mr-1" data-placement="top" href="#" id="register-button" title="Register's a user">Register</a>
-                                <a class="btn-lg btn-info col-3 mr-1" data-placement="top" href="#" id="login-button" title="Attempts to log a user in">Login</a>
-
-                                <a class="btn-lg btn-info col-3 mr-1 offset-2" data-placement="top" href="#" id="get-users-button" title="Gets the users list">Get Users</a>
-                            </div>
-
-                            <div class="row mb-1">
-                                <input class="form-control col-3 mr-1" id="update-username" placeholder="Username" type="text"/>
-                                <input class="form-control col-3 mr-1" id="update-password" placeholder="New Password" type="password"/>
-                            </div>
-                            <div class="row mb-5">
-                                <a class="btn-lg btn-info col-3" data-placement="top" href="#" id="update-password-button" title="Updates a user's password">Update Password</a>
-                            </div>
-
-                            <div class="row mb-1">
-                                <!--Username field-->
-                                <input class="form-control col-3" id="delete-username" placeholder="Existing Username" type="text"/>
-                            </div>
-                            <div class="row">
-                                <a class="btn-lg btn-danger col-3" data-placement="top" href="#" id="delete-button" title="Register's a user">Delete User</a>
-                            </div>
+        <!-- Page Content -->
+        <h3 class="lead mb-4 mt-3 font-weight-bold text-center" id="message"></h3>
+        <div class="container">
+            {% if not session.logged_in %}
+            <!--Registration or login form-->
+            <form class="border mt-5 w-50 mx-auto">
+                <div class="mt-2 mb-3 mx-3">
+                    <div class="form-group">
+                        <label for="usernameInput">Username</label>
+                        <input type="text" class="form-control" id="usernameInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">Password</label>
+                        <input type="password" class="form-control" id="passwordInput">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submitLogin">Submit</button>
+                </div>
+            </form>
+            {% else %}
+            <!--Logged in user features-->
+            <div class="row">
+                <div class="border col mx-3">
+                    <!--Change password-->
+                    <div class="mt-2 mb-3 mx-3">
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="text" class="form-control" id="newPassword">
                         </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
+                <div class="border col mx-3">
+                    <!--Change username-->
+                    <div class="mt-2 mb-3 mx-3">
+                        <div class="form-group">
+                            <label for="newUsername">New Username</label>
+                            <input type="text" class="form-control" id="newUsername">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+                <div class="border col mx-3 d-flex align-items-center mx-auto d-block">
+                    <!--Delete account-->
+                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                </div>
             </div>
+            {% endif %}
         </div>
 
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+        <script src="/js/jquery.js"></script>
+        <script src="/js/bootstrap.js"></script>
         <script src="/js/init.js"></script>
     </body>
-
-    <footer class="page-footer font-small teal pt-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <h5 class="text-uppercase font-weight-bold">Name</h5>
-                    <p>Nicholas Rosati</p>
-                </div>
-                <div class="col-sm">
-                    <h5 class="text-uppercase font-weight-bold">Student Number</h5>
-                    <p>1037025</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
 </html>
