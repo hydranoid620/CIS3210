@@ -10,10 +10,9 @@ $(function () {
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User validated.');
                 location.reload();
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                //TODO: Handle incorrect password and register user if username doesnt exist
-                if (jqXHR.status === 404) {
-                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username. Try registering instead.');
+            error: function (jqXHR) {
+                if (jqXHR.status === 401) {
+                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Invalid login entered.');
                 } else {
                     $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
                     console.log(jqXHR.responseText);

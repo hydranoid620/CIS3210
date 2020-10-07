@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for, json
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 import MySQLdb
 import MySQLdb.cursors
 
@@ -62,7 +62,7 @@ def edit_user(username):
             db.cursor().execute(sql, (request.form['password'], username))
             db.commit()
             db.close()
-            return jsonify({'message': 'OK'}), 200
+            return jsonify(message='OK'), 200
         except MySQLdb.Error as e:
             db.rollback()
             if e.args[0] == 1054:  # If the supplied username was not found
@@ -80,18 +80,15 @@ def edit_user(username):
             db.cursor().execute(sql, (username,))
             db.commit()
             db.close()
-            return jsonify({'message': 'OK'}), 200
+            return jsonify(message='OK'), 200
         except MySQLdb.Error as e:
             db.rollback()
-            if e.args[0] == 1054:  # If the supplied username was not found
-                db.close()
-                return jsonify(e.args), 404
-            else:
-                db.close()
-                return jsonify(e.args), 500
+            db.close()
+            return jsonify(e.args), 500
 
 
-@app.route('/register', methods=['POST'])
+# TODO: Remove
+# @app.route('/register', methods=['POST'])
 def register():
     db = get_db()
     try:
@@ -99,7 +96,7 @@ def register():
         db.cursor().execute(sql, (request.form['username'], request.form['password']))
         db.commit()
         db.close()
-        return jsonify({'message': 'OK'}), 200
+        return jsonify(message='OK'), 200
     except MySQLdb.Error as e:
         db.rollback()
         db.close()
@@ -108,23 +105,31 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    session['username'] = request.form['username']
+    request_json = request.get_json()
+    db = get_db()
+    db_cursor = db.cursor()
+
+    # Try and find the user in the database
+    if db_cursor.execute("SELECT * FROM users WHERE username=%s", (request_json['username'],)) > 0:
+        if db_cursor.fetchall()[0][1] != request_json['password']:
+            # Incorrect password
+            db.close()
+            return jsonify(message='Invalid login'), 401
+    else:
+        # User does not exist in the database, register them
+        try:
+            db_cursor.execute("INSERT INTO users VALUES (%s, %s)", (request_json['username'], request_json['password']))
+            db.commit()
+        except MySQLdb.Error as e:
+            db.rollback()
+            db.close()
+            return jsonify(e.args), 500
+    db.close()
+
+    # Set session variables and return
+    session['username'] = request_json['username']
     session['logged_in'] = True
-    # return render_template('index.html')
     return redirect(url_for('index'))
-    # db = get_db()
-    # cursor = db.cursor()
-    # try:
-    #     sql = "SELECT * FROM users WHERE username=%s AND password=%s"
-    #     cursor.execute(sql, (request.form['username'], request.form['password']))
-    #     if len(cursor.fetchall()) > 0:
-    #         db.close()
-    #         return jsonify({'message': 'OK'}), 200
-    #     else:
-    #         db.close()
-    #     return {'message': 'User not found'}, 404
-    # except MySQLdb.Error as e:
-    #     return jsonify(e.args), 500
 
 
 @app.route('/logout', methods=['GET'])

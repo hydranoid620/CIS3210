@@ -18,9 +18,6 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
                 <a class="navbar-brand" href="#">CIS*3210</a>
-                <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarResponsive" data-toggle="collapse" type="button">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 {% if session.logged_in %}
                 <a class="navbar-text">Welcome, {{ session.username }}!</a>
                 {% endif %}
