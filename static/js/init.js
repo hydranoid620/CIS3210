@@ -4,7 +4,8 @@ $(function () {
         $.ajax({
             type: 'POST',
             url: 'login',
-            data: {username: $("#usernameInput").val(), password: $("#passwordInput").val()},
+            contentType: 'application/json',
+            data: JSON.stringify({username: $("#usernameInput").val(), password: $("#passwordInput").val()}),
             success: function () {
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User validated.');
                 location.reload();
@@ -37,7 +38,8 @@ $(function () {
         $.ajax({
             url: 'users/' + $('#update-username').val(),
             type: 'PUT',
-            data: {'password': $("#update-password").val()},
+            dataType: 'application/json',
+            data: JSON.stringify({password: $("#update-password").val()}),
             success: function () {
                 //Clear input fields
                 $('#update-username').val('');
@@ -52,8 +54,7 @@ $(function () {
                     $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
                     console.log(jqXHR.responseText);
                 }
-            },
-            dataType: 'json'
+            }
         });
     });
 
@@ -62,7 +63,6 @@ $(function () {
         $.ajax({
             url: 'users/' + $('#delete-username').val(),
             type: 'DELETE',
-            data: {},
             success: function () {
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User deleted. User list must be updated.'); //Display status message
             },
@@ -74,11 +74,9 @@ $(function () {
                     $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
                     console.log(jqXHR.responseText);
                 }
-            },
-            dataType: 'json'
+            }
         });
     });
-
 
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
 });
