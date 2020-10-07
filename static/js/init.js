@@ -7,15 +7,15 @@ $(function () {
             contentType: 'application/json',
             data: JSON.stringify({username: $("#usernameInput").val(), password: $("#passwordInput").val()}),
             success: function () {
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User validated.');
-                location.reload();
+                setMessage('User validated.', 1)
+                location.reload()
             },
             error: function (jqXHR) {
                 if (jqXHR.status === 401) {
-                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Invalid login entered.');
+                    setMessage('Invalid login entered.', 2)
                 } else {
-                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
-                    console.log(jqXHR.responseText);
+                    setMessage('There was an error with that request. Check the console for details.', 2);
+                    console.log(jqXHR);
                 }
             }
         });
@@ -26,53 +26,70 @@ $(function () {
         $.ajax({
             type: 'GET',
             url: 'logout',
-            complete: function () {
-                location.reload();
+            success: function () {
+                setMessage('Logged out.', 1)
+                location.reload()
+            },
+            error: function (jqXHR) {
+                setMessage('There was an error with that request. Check the console for details.');
+                console.log(jqXHR)
             }
         });
     });
 
     //Attempts to update the given user with the new password
-    $("#update-password-button").on("click", function () {
+    $("#submitUsernameChange").on("click", function () {
         $.ajax({
-            url: 'users/' + $('#update-username').val(),
+            url: 'users/' + $('#submitUsernameChange').val(),
             type: 'PUT',
-            dataType: 'application/json',
-            data: JSON.stringify({password: $("#update-password").val()}),
+            data: JSON.stringify({change: 'username', username: $("#newUsername").val()}),
             success: function () {
                 //Clear input fields
-                $('#update-username').val('');
-                $('#update-password').val('');
-
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User password updated.');//Display status message
+                $('#newUsername').val('');
+                //Show success message
+                setMessage('Username changed.', 1)
             },
             error: function (jqXHR) {
-                if (jqXHR.status === 404) {
-                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username to update.');
-                } else {
-                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
-                    console.log(jqXHR.responseText);
-                }
+                //Show error message
+                setMessage('There was an error with that request. Check the console for details.', 2);
+                console.log(jqXHR);
             }
         });
     });
 
-    //Attempt to delete the user with the entered username
-    $("#delete-button").on("click", function () {
+    //Attempts to update the given user with the new password
+    $("#submitPasswordChange").on("click", function () {
         $.ajax({
-            url: 'users/' + $('#delete-username').val(),
+            url: 'users/' + $('#submitPasswordChange').val(),
+            type: 'PUT',
+            data: JSON.stringify({change: 'password', password: $("#newPassword").val()}),
+            success: function () {
+                //Clear input fields
+                $('#newPassword').val('');
+                //Show success message
+                setMessage('Password changed successfully.', 1)
+            },
+            error: function (jqXHR) {
+                //Show error message
+                setMessage('There was an error with that request. Check the console for details.', 2);
+                console.log(jqXHR);
+            }
+        });
+    });
+
+//Attempt to delete the user with the entered username
+    $("#submitDeleteAccount").on("click", function () {
+        $.ajax({
+            url: 'users',
             type: 'DELETE',
             success: function () {
-                $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User deleted. User list must be updated.'); //Display status message
+                setMessage('Your account was deleted.', 1);
+                location.reload()
             },
             error: function (jqXHR) {
                 //Display status message
-                if (jqXHR.status === 404) {
-                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username to delete.');
-                } else {
-                    $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
-                    console.log(jqXHR.responseText);
-                }
+                setMessage('There was an error with that request. Check the console for details.', 2);
+                console.log(jqXHR);
             }
         });
     });
@@ -80,3 +97,16 @@ $(function () {
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
 });
 
+function setMessage (message, type) {
+    if (type === 1) {
+        $('#message').removeClass('text-success')
+                     .removeClass('text-warning')
+                     .addClass('text-success')
+                     .text(message);
+    } else {
+        $('#message').removeClass('text-success')
+                     .removeClass('text-warning')
+                     .addClass('text-warning')
+                     .text(message);
+    }
+}

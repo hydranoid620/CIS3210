@@ -60,9 +60,9 @@
                     <div class="mt-2 mb-3 mx-3">
                         <div class="form-group">
                             <label for="newPassword">New Password</label>
-                            <input type="text" class="form-control" id="newPassword">
+                            <input type="password" class="form-control" id="newPassword">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="submitPasswordChange" value="{{ session.username }}">Submit</button>
                     </div>
                 </div>
                 <div class="border col mx-3">
@@ -72,12 +72,12 @@
                             <label for="newUsername">New Username</label>
                             <input type="text" class="form-control" id="newUsername">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="submitUsernameChange" value="{{ session.username }}">Submit</button>
                     </div>
                 </div>
                 <div class="border col mx-3 p-3 text-center">
                     <!--Delete account-->
-                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                    <button type="submit" class="btn btn-danger" id="submitDeleteAccount">Delete Account</button>
                 </div>
             </div>
             {% endif %}

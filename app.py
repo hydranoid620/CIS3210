@@ -3,10 +3,7 @@ import MySQLdb
 import MySQLdb.cursors
 
 app = Flask(__name__, static_url_path='')
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-
-
-# app.debug = True
+app.secret_key = b'A+jWl4h6wMkR7LcWBm85AO8q'
 
 
 def get_db():
@@ -20,7 +17,7 @@ def get_db():
 def check_db_table():
     # Makes sure the table exists and has the right columns
     db = get_db()
-    db.cursor().execute('CREATE TABLE IF NOT EXISTS `users` (`name` TINYTEXT, `password` TINYTEXT)')
+    db.cursor().execute("CREATE TABLE IF NOT EXISTS `users` (`name` TINYTEXT, `password` TINYTEXT)")
     db.commit()
     db.close()
 
@@ -34,78 +31,9 @@ def index(name=None):
     return render_template('index.html', name=name)
 
 
-# General user information API endpoint
-@app.route('/users', methods=['GET'])
-def user():
-    db = get_db()
-    cursor = db.cursor()
-    try:
-        # Returns the list of users
-        cursor.execute('SELECT * FROM `users`')
-        json_result = []
-        for row in cursor.fetchall():
-            json_result.append({'username': row[0], 'password': row[1]})
-        db.close()
-        return jsonify(json_result), 200
-    except MySQLdb.Error as e:
-        db.close()
-        return jsonify(e.args), 500
-
-
-@app.route('/users/<username>', methods=['PUT', 'DELETE'])
-def edit_user(username):
-    # Updates a user's password
-    if request.method == 'PUT':
-        db = get_db()
-        try:
-            sql = "UPDATE users SET password=%s WHERE username=%s"
-            db.cursor().execute(sql, (request.form['password'], username))
-            db.commit()
-            db.close()
-            return jsonify(message='OK'), 200
-        except MySQLdb.Error as e:
-            db.rollback()
-            if e.args[0] == 1054:  # If the supplied username was not found
-                db.close()
-                return jsonify(e.args), 404
-            else:
-                db.close()
-                return jsonify(e.args), 500
-
-    # Deletes a user from the database
-    elif request.method == 'DELETE':
-        db = get_db()
-        try:
-            sql = "DELETE FROM users WHERE username=%s"
-            db.cursor().execute(sql, (username,))
-            db.commit()
-            db.close()
-            return jsonify(message='OK'), 200
-        except MySQLdb.Error as e:
-            db.rollback()
-            db.close()
-            return jsonify(e.args), 500
-
-
-# TODO: Remove
-# @app.route('/register', methods=['POST'])
-def register():
-    db = get_db()
-    try:
-        sql = "INSERT INTO users VALUES (%s, %s)"
-        db.cursor().execute(sql, (request.form['username'], request.form['password']))
-        db.commit()
-        db.close()
-        return jsonify(message='OK'), 200
-    except MySQLdb.Error as e:
-        db.rollback()
-        db.close()
-        return jsonify(e.args), 500
-
-
 @app.route('/login', methods=['POST'])
 def login():
-    request_json = request.get_json()
+    request_json = request.get_json(force=True)
     db = get_db()
     db_cursor = db.cursor()
 
@@ -123,7 +51,7 @@ def login():
         except MySQLdb.Error as e:
             db.rollback()
             db.close()
-            return jsonify(e.args), 500
+            return jsonify(message=e.args), 500
     db.close()
 
     # Set session variables and return
@@ -137,3 +65,42 @@ def logout():
     session.pop('username', None)
     session['logged_in'] = False
     return redirect(url_for('index'))
+
+
+@app.route('/users/<username>', methods=['PUT'])
+def edit_user(username):
+    # Updates a user's password
+    request_json = request.get_json(force=True)
+    db = get_db()
+    db_cursor = db.cursor()
+
+    try:
+        if request_json['change'] == 'username':
+            db_cursor.execute("UPDATE users SET username=%s WHERE username=%s", (request_json['username'], username))
+        elif request_json['change'] == 'password':
+            db_cursor.execute("UPDATE users SET password=%s WHERE username=%s", (request_json['password'], username))
+        else:
+            return jsonify(message='Bad request'), 400
+        db.commit()
+        db.close()
+        return jsonify(message='OK'), 200
+    except MySQLdb.Error as e:
+        return jsonify(message=e.args), 500
+
+
+# Delete user from database
+@app.route('/users', methods=['DELETE'])
+def delete_user():
+    db = get_db()
+    try:
+        db.cursor().execute("DELETE FROM users WHERE username=%s", (session['username'],))
+        db.commit()
+        db.close()
+        # Clear the session cookie
+        session.pop('username', None)
+        session.pop('logged_in', None)
+        return redirect(url_for('index'))
+    except MySQLdb.Error as e:
+        db.rollback()
+        db.close()
+        return jsonify(message=e.args), 500
