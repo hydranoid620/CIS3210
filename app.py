@@ -110,7 +110,8 @@ def register():
 def login():
     session['username'] = request.form['username']
     session['logged_in'] = True
-    return redirect(url_for('index')), 200
+    # return render_template('index.html')
+    return redirect(url_for('index'))
     # db = get_db()
     # cursor = db.cursor()
     # try:
@@ -129,5 +130,5 @@ def login():
 @app.route('/logout', methods=['GET'])
 def logout():
     session.pop('username', None)
-    session.pop('logged_in', None)
+    session['logged_in'] = False
     return redirect(url_for('index'))

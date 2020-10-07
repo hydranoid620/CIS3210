@@ -21,6 +21,9 @@
                 <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarResponsive" data-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                {% if session.logged_in %}
+                <a class="navbar-text">Welcome, {{ session.username }}!</a>
+                {% endif %}
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <!--Log in/log out button-->
