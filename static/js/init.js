@@ -6,9 +6,18 @@ $(function () {
             url: 'login',
             contentType: 'application/json',
             data: JSON.stringify({username: $("#usernameInput").val(), password: $("#passwordInput").val()}),
-            success: function () {
-                setMessage('User validated.', 1)
-                location.reload()
+            success: function (data) {
+                if (data['newAccount']) {
+                    setMessage('Account created.', 1);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    setMessage('Logged in.', 1);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
             },
             error: function (jqXHR) {
                 if (jqXHR.status === 401) {
@@ -28,7 +37,9 @@ $(function () {
             url: 'logout',
             success: function () {
                 setMessage('Logged out.', 1)
-                location.reload()
+                setTimeout(function (){
+                    location.reload();
+                }, 1000);
             },
             error: function (jqXHR) {
                 setMessage('There was an error with that request. Check the console for details.');
@@ -47,7 +58,10 @@ $(function () {
                 //Clear input fields
                 $('#newUsername').val('');
                 //Show success message
-                setMessage('Username changed.', 1)
+                setMessage('Username changed. Reloading page.', 1)
+                setTimeout(function (){
+                    location.reload();
+                }, 1500);
             },
             error: function (jqXHR) {
                 //Show error message
@@ -84,7 +98,9 @@ $(function () {
             type: 'DELETE',
             success: function () {
                 setMessage('Your account was deleted.', 1);
-                location.reload()
+                setTimeout(function (){
+                    location.reload();
+                }, 1000);
             },
             error: function (jqXHR) {
                 //Display status message

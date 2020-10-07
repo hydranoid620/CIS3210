@@ -48,36 +48,43 @@ def login():
         try:
             db_cursor.execute("INSERT INTO users VALUES (%s, %s)", (request_json['username'], request_json['password']))
             db.commit()
+            db.close()
+            session['username'] = request_json['username']
+            session['logged_in'] = True
+            return jsonify(newAccount=True), 200
         except MySQLdb.Error as e:
             db.rollback()
             db.close()
             return jsonify(message=e.args), 500
-    db.close()
 
-    # Set session variables and return
+    # Set session variables and return logged in user
+    db.close()
     session['username'] = request_json['username']
     session['logged_in'] = True
-    return redirect(url_for('index'))
+    return jsonify(message='Logged in', newAccount=False), 200
 
 
 @app.route('/logout', methods=['GET'])
 def logout():
     session.pop('username', None)
     session['logged_in'] = False
-    return redirect(url_for('index'))
+    return jsonify(message='OK'), 200
 
 
+# Edit a user
 @app.route('/users/<username>', methods=['PUT'])
 def edit_user(username):
-    # Updates a user's password
     request_json = request.get_json(force=True)
     db = get_db()
     db_cursor = db.cursor()
 
     try:
         if request_json['change'] == 'username':
+            # Updates a user's username
             db_cursor.execute("UPDATE users SET username=%s WHERE username=%s", (request_json['username'], username))
+            session['username'] = request_json['username']
         elif request_json['change'] == 'password':
+            # Updates a user's password
             db_cursor.execute("UPDATE users SET password=%s WHERE username=%s", (request_json['password'], username))
         else:
             return jsonify(message='Bad request'), 400
@@ -99,7 +106,7 @@ def delete_user():
         # Clear the session cookie
         session.pop('username', None)
         session.pop('logged_in', None)
-        return redirect(url_for('index'))
+        return jsonify(message='OK'), 200
     except MySQLdb.Error as e:
         db.rollback()
         db.close()
