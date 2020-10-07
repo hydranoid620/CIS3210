@@ -110,7 +110,7 @@ def register():
 def login():
     session['username'] = request.form['username']
     session['logged_in'] = True
-    return redirect(url_for('index'))
+    return redirect(url_for('index')), 200
     # db = get_db()
     # cursor = db.cursor()
     # try:

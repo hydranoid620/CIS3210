@@ -7,29 +7,25 @@ $(function () {
             data: {username: $("#usernameInput").val(), password: $("#passwordInput").val()},
             success: function () {
                 $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-success').text('User validated.');
+                location.reload();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 200) {
-                    location.reload();
-                    return;
-                }
-
+                //TODO: Handle incorrect password and register user if username doesnt exist
                 if (jqXHR.status === 404) {
                     $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('Could not find a user with that username. Try registering instead.');
                 } else {
                     $('#message').removeClass('text-success').removeClass('text-warning').addClass('text-warning').text('There was an error with that request. Check the console for details.');
                     console.log(jqXHR.responseText);
                 }
-            },
-            dataType: 'json',
+            }
         });
     });
 
+    //Logout handler
     $("#logout").on("click", function() {
         $.ajax({
             type: 'GET',
             url: 'logout',
-            dataType: 'json',
             complete: function () {
                 location.reload();
             }
