@@ -11,6 +11,9 @@
 
         <!-- Bootstrap core CSS -->
         <link href="/css/bootstrap.css" rel="stylesheet">
+
+        <!-- Custom stuff -->
+        <link href="/css/main.css" rel="stylesheet">
     </head>
 
     <body>
@@ -81,15 +84,42 @@
                 </div>
             </div>
             {% endif %}
+
+            <div class="row mt-5">
+                <!-- Search stuff -->
+                <div class="container mb-1">
+                    <div class="row">
+                        <input type="text" placeholder="Search Term" class="form-control w-25 mr-1" id="searchTerm">
+                        <button type="submit" class="btn btn-primary mr-1" id="submitSearch">Search</button>
+                        <button type="submit" class="btn btn-danger mr-1" id="resetSearch">Clear Search</button>
+                    </div>
+                </div>
+
+                <!-- Data table -->
+                <div id="modTableContainer" class="border w-100">
+                    <table class="table table-hover table-borderless" id="modTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Short Description</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Bootstrap core JavaScript -->
         <script src="/js/jquery.js"></script>
         <script src="/js/bootstrap.js"></script>
+
+        <!-- Custom stuff -->
         <script src="/js/init.js"></script>
     </body>
 
-    <footer class="page-footer font-small teal pt-4 fixed-bottom">
+    <div class="blockquote-footer">
         <div class="container">
             <div class="row">
                 <div class="mx-auto">
@@ -102,5 +132,5 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
 </html>

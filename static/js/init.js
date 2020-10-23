@@ -91,7 +91,7 @@ $(function () {
         });
     });
 
-//Attempt to delete the user with the entered username
+    //Attempt to delete the user with the entered username
     $("#submitDeleteAccount").on("click", function () {
         $.ajax({
             url: 'users',
@@ -110,19 +110,66 @@ $(function () {
         });
     });
 
+    //Search mods
+    $("#submitSearch").on("click", function () {
+        $.ajax({
+            url: '/ficsit/search',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({searchTerm: $("#searchTerm").val()}),
+            success: function (data) {
+                $('#modTable tbody').empty();
+                data.forEach(fillTableData);
+            },
+            error: function (jqXHR) {
+                //Display status message
+                setMessage('There was an error searching. Check the console for details.', 2);
+                console.log(jqXHR);
+            }
+        });
+    });
+
+    //Reset search
+    $("#resetSearch").on("click", function () {
+        populateMods()
+        $("#searchTerm").val("")
+    });
+
+    populateMods()
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
 });
+
+function populateMods() {
+    //Gets data for the table
+    $.ajax({
+        url: '/ficsit/get_mods',
+        type: 'GET',
+        success: function (data) {
+            $('#modTable tbody').empty();
+            data.forEach(fillTableData);
+        },
+        error: function (jqXHR) {
+            //Display status message
+            setMessage('There was an error building the table. Check the console for details.', 2);
+            console.log(jqXHR);
+        }
+    });
+}
+
+function fillTableData (element, index) {
+    $('#modTable tbody').append(`<tr><th scope='row'>${index + 1}</th><td>${element['name']}</td><td>${element['short_description']}</td></tr>`)
+}
 
 function setMessage (message, type) {
     if (type === 1) {
         $('#message').removeClass('text-success')
-                     .removeClass('text-warning')
-                     .addClass('text-success')
-                     .text(message);
+            .removeClass('text-warning')
+            .addClass('text-success')
+            .text(message);
     } else {
         $('#message').removeClass('text-success')
-                     .removeClass('text-warning')
-                     .addClass('text-warning')
-                     .text(message);
+            .removeClass('text-warning')
+            .addClass('text-warning')
+            .text(message);
     }
 }
