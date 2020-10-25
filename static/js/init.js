@@ -31,13 +31,13 @@ $(function () {
     });
 
     //Logout handler
-    $("#logout").on("click", function() {
+    $("#logout").on("click", function () {
         $.ajax({
             type: 'GET',
             url: 'logout',
             success: function () {
                 setMessage('Logged out.', 1)
-                setTimeout(function (){
+                setTimeout(function () {
                     location.reload();
                 }, 1000);
             },
@@ -59,7 +59,7 @@ $(function () {
                 $('#newUsername').val('');
                 //Show success message
                 setMessage('Username changed. Reloading page.', 1)
-                setTimeout(function (){
+                setTimeout(function () {
                     location.reload();
                 }, 1500);
             },
@@ -98,7 +98,7 @@ $(function () {
             type: 'DELETE',
             success: function () {
                 setMessage('Your account was deleted.', 1);
-                setTimeout(function (){
+                setTimeout(function () {
                     location.reload();
                 }, 1000);
             },
@@ -156,11 +156,11 @@ function populateMods() {
     });
 }
 
-function fillTableData (element, index) {
+function fillTableData(element, index) {
     $('#modTable tbody').append(`<tr><th scope='row'>${index + 1}</th><td>${element['name']}</td><td>${element['short_description']}</td></tr>`)
 }
 
-function setMessage (message, type) {
+function setMessage(message, type) {
     if (type === 1) {
         $('#message').removeClass('text-success')
             .removeClass('text-warning')
