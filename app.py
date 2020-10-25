@@ -120,8 +120,7 @@ def delete_user():
 # This is all for talking to the Ficsit.app API
 
 def make_query(query: str) -> requests.Response:
-    response = requests.post(url='https://api.ficsit.app/v2/query', data=query, headers={'Content-Type': 'application/json'})
-    return response
+    return requests.post(url='https://api.ficsit.app/v2/query', data=query, headers={'Content-Type': 'application/json'})
 
 
 def mod_count() -> int:
