@@ -21,7 +21,7 @@ def get_db() -> MySQLdb.Connection:
 def check_db_table():
     # Makes sure the table exists and has the right columns
     db = get_db()
-    db.cursor().execute("CREATE TABLE IF NOT EXISTS `users` (`name` TINYTEXT, `password` TINYTEXT)")
+    db.cursor().execute('CREATE TABLE IF NOT EXISTS `users` (`name` TINYTEXT, `password` TINYTEXT)')
     db.commit()
     db.close()
 
@@ -42,7 +42,7 @@ def login():
     db_cursor = db.cursor()
 
     # Try and find the user in the database
-    if db_cursor.execute("SELECT * FROM users WHERE username=%s", (request_json['username'],)) > 0:
+    if db_cursor.execute('SELECT * FROM users WHERE username=%s', (request_json['username'],)) > 0:
         if db_cursor.fetchall()[0][1] != request_json['password']:
             # Incorrect password
             db.close()
@@ -50,7 +50,7 @@ def login():
     else:
         # User does not exist in the database, register them
         try:
-            db_cursor.execute("INSERT INTO users VALUES (%s, %s)", (request_json['username'], request_json['password']))
+            db_cursor.execute('INSERT INTO users VALUES (%s, %s)', (request_json['username'], request_json['password']))
             db.commit()
             db.close()
             session['username'] = request_json['username']
@@ -85,11 +85,11 @@ def edit_user(username):
     try:
         if request_json['change'] == 'username':
             # Updates a user's username
-            db_cursor.execute("UPDATE users SET username=%s WHERE username=%s", (request_json['username'], username))
+            db_cursor.execute('UPDATE users SET username=%s WHERE username=%s', (request_json['username'], username))
             session['username'] = request_json['username']
         elif request_json['change'] == 'password':
             # Updates a user's password
-            db_cursor.execute("UPDATE users SET password=%s WHERE username=%s", (request_json['password'], username))
+            db_cursor.execute('UPDATE users SET password=%s WHERE username=%s', (request_json['password'], username))
         else:
             return jsonify(message='Bad request'), 400
         db.commit()
@@ -104,7 +104,7 @@ def edit_user(username):
 def delete_user():
     db = get_db()
     try:
-        db.cursor().execute("DELETE FROM users WHERE username=%s", (session['username'],))
+        db.cursor().execute('DELETE FROM users WHERE username=%s', (session['username'],))
         db.commit()
         db.close()
         # Clear the session cookie
@@ -119,13 +119,13 @@ def delete_user():
 
 # This is all for talking to the Ficsit.app API
 
-def make_query(query: json) -> requests.Response:
-    response = requests.post(url="https://api.ficsit.app/v2/query", data=query, headers={'Content-Type': 'application/json'})
+def make_query(query: str) -> requests.Response:
+    response = requests.post(url='https://api.ficsit.app/v2/query', data=query, headers={'Content-Type': 'application/json'})
     return response
 
 
 def mod_count() -> int:
-    response = make_query(json.dumps({"query": "query {getMods {count}}"}))
+    response = make_query(json.dumps({'query': 'query {getMods {count}}'}))
     return json.loads(response.text)['data']['getMods']['count']
 
 
@@ -135,7 +135,7 @@ def get_mods():
     mods = []
     for i in range(0, math.floor(mod_count() / 100) + 1):
         response = make_query(json.dumps(
-            {"query": "query {getMods (filter: {limit: 100 offset: " + str(i * 100) + "}) {mods {name short_description}}}"}
+            {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + '}) {mods {name short_description}}}'}
         ))
         mods.extend(json.loads(response.text)['data']['getMods']['mods'])
     return jsonify(mods), 200
@@ -150,7 +150,7 @@ def search_for_mod():
     mods = []
     for i in range(0, math.ceil((mod_count() / 100) + 1)):
         response = make_query(json.dumps(
-            {"query": "query {getMods (filter: {limit: 100 offset: " + str(i * 100) + f''' search: "{search_term}"''' + "}) {mods {name short_description}}}"}
+            {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + ' search: "' + search_term + '"}) {mods {name short_description}}}'}
         ))
         mods.extend(json.loads(response.text)['data']['getMods']['mods'])
     return jsonify(mods), 200
