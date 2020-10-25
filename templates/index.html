@@ -52,7 +52,7 @@
                         <label for="passwordInput">Password</label>
                         <input type="password" class="form-control" id="passwordInput">
                     </div>
-                    <button type="submit" class="btn btn-primary" id="submitLogin">Submit</button>
+                    <button type="button" class="btn btn-primary" id="submitLogin">Submit</button>
                 </div>
             </form>
             {% else %}
@@ -65,7 +65,7 @@
                             <label for="newPassword">New Password</label>
                             <input type="password" class="form-control" id="newPassword">
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submitPasswordChange" value="{{ session.username }}">Submit</button>
+                        <button type="button" class="btn btn-primary" id="submitPasswordChange" value="{{ session.username }}">Submit</button>
                     </div>
                 </div>
                 <div class="border col mx-3">
@@ -75,12 +75,12 @@
                             <label for="newUsername">New Username</label>
                             <input type="text" class="form-control" id="newUsername">
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submitUsernameChange" value="{{ session.username }}">Submit</button>
+                        <button type="button" class="btn btn-primary" id="submitUsernameChange" value="{{ session.username }}">Submit</button>
                     </div>
                 </div>
                 <div class="border col mx-3 p-3 text-center">
                     <!--Delete account-->
-                    <button type="submit" class="btn btn-danger" id="submitDeleteAccount">Delete Account</button>
+                    <button type="button" class="btn btn-danger" id="submitDeleteAccount">Delete Account</button>
                 </div>
             </div>
             {% endif %}
@@ -90,8 +90,8 @@
                 <div class="container mb-1">
                     <div class="row">
                         <input type="text" placeholder="Search Term" class="form-control w-25 mr-1" id="searchTerm">
-                        <button type="submit" class="btn btn-primary mr-1" id="submitSearch">Search</button>
-                        <button type="submit" class="btn btn-danger mr-1" id="resetSearch">Clear Search</button>
+                        <button type="button" class="btn btn-primary mr-1" id="submitSearch">Search</button>
+                        <button type="button" class="btn btn-danger mr-1" id="resetSearch">Clear Search</button>
                     </div>
                 </div>
 

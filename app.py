@@ -1,16 +1,16 @@
+import json
 import math
 
-from flask import Flask, render_template, jsonify, request, session
-import requests
-import json
 import MySQLdb
 import MySQLdb.cursors
+import requests
+from flask import Flask, render_template, jsonify, request, session
 
 app = Flask(__name__, static_url_path='')
 app.secret_key = b'A+jWl4h6wMkR7LcWBm85AO8q'
 
 
-def get_db():
+def get_db() -> MySQLdb.Connection:
     db = MySQLdb.connect(host='dursley.socs.uoguelph.ca',
                          user='nrosati',
                          passwd='1037025',
@@ -119,12 +119,12 @@ def delete_user():
 
 # This is all for talking to the Ficsit.app API
 
-def make_query(query):
+def make_query(query: json) -> requests.Response:
     response = requests.post(url="https://api.ficsit.app/v2/query", data=query, headers={'Content-Type': 'application/json'})
     return response
 
 
-def mod_count():
+def mod_count() -> int:
     response = make_query(json.dumps({"query": "query {getMods {count}}"}))
     return json.loads(response.text)['data']['getMods']['count']
 
@@ -134,7 +134,6 @@ def mod_count():
 def get_mods():
     mods = []
     for i in range(0, math.floor(mod_count() / 100) + 1):
-        # response = make_query("""{"query": "query {getMods (filter: {limit: 100 offset: """ + str(i * 100) + """}) {mods {name short_description}}}"}""")
         response = make_query(json.dumps(
             {"query": "query {getMods (filter: {limit: 100 offset: " + str(i * 100) + "}) {mods {name short_description}}}"}
         ))
