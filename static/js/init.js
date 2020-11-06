@@ -1,6 +1,6 @@
 $(function () {
     //Login or register a user
-    $("#submitLogin").on("click", function () {
+    $('#submitLogin').on('click', function () {
         $.ajax({
             type: 'POST',
             url: 'login',
@@ -31,7 +31,7 @@ $(function () {
     });
 
     //Logout handler
-    $("#logout").on("click", function() {
+    $('#logout').on('click', function() {
         $.ajax({
             type: 'GET',
             url: 'logout',
@@ -49,7 +49,7 @@ $(function () {
     });
 
     //Attempts to update the given user with the new password
-    $("#submitUsernameChange").on("click", function () {
+    $('#submitUsernameChange').on('click', function () {
         $.ajax({
             url: 'users/' + $('#submitUsernameChange').val(),
             type: 'PUT',
@@ -72,7 +72,7 @@ $(function () {
     });
 
     //Attempts to update the given user with the new password
-    $("#submitPasswordChange").on("click", function () {
+    $('#submitPasswordChange').on('click', function () {
         $.ajax({
             url: 'users/' + $('#submitPasswordChange').val(),
             type: 'PUT',
@@ -92,7 +92,7 @@ $(function () {
     });
 
     //Attempt to delete the user with the entered username
-    $("#submitDeleteAccount").on("click", function () {
+    $('#submitDeleteAccount').on('click', function () {
         $.ajax({
             url: 'users',
             type: 'DELETE',
@@ -111,12 +111,12 @@ $(function () {
     });
 
     //Search mods
-    $("#submitSearch").on("click", function () {
+    $('#submitSearch').on('click', function () {
         $.ajax({
             url: '/ficsit/search',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({searchTerm: $("#searchTerm").val()}),
+            data: JSON.stringify({searchTerm: $("#searchTerm").val(), numItems: $('#numberOfItems').val() }),
             success: function (data) {
                 $('#modTable tbody').empty();
                 data.forEach(fillTableData);
@@ -135,6 +135,11 @@ $(function () {
         $("#searchTerm").val("")
     });
 
+    //Update list when number of items changed
+    $('#numberOfItems').on('change', function () {
+        populateMods();
+    })
+
     populateMods()
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
 });
@@ -143,7 +148,8 @@ function populateMods() {
     //Gets data for the table
     $.ajax({
         url: '/ficsit/get_mods',
-        type: 'GET',
+        type: 'POST',
+        data: JSON.stringify({ numItems: $('#numberOfItems').val() }),
         success: function (data) {
             $('#modTable tbody').empty();
             data.forEach(fillTableData);

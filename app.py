@@ -125,33 +125,49 @@ def make_query(query):
 
 
 def mod_count():
-    response = make_query(json.dumps({"query": "query {getMods {count}}"}))
+    response = make_query(json.dumps(
+        {'query': 'query {getMods {count}}'}
+    ))
     return json.loads(response.text)['data']['getMods']['count']
 
 
 # Get full list of mods
-@app.route('/ficsit/get_mods', methods=['GET'])
+@app.route('/ficsit/get_mods', methods=['POST'])
 def get_mods():
     mods = []
-    for i in range(0, math.floor(mod_count() / 100) + 1):
-        # response = make_query("""{"query": "query {getMods (filter: {limit: 100 offset: """ + str(i * 100) + """}) {mods {name short_description}}}"}""")
+    num_items = request.get_json(force=True)['numItems']
+
+    if int(num_items) == -1:
+        for i in range(0, math.floor(mod_count() / 100) + 1):
+            response = make_query(json.dumps(
+                {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + '}) {mods {name short_description}}}'}
+            ))
+            mods.extend(json.loads(response.text)['data']['getMods']['mods'])
+    elif int(num_items) <= 100:
         response = make_query(json.dumps(
-            {"query": "query {getMods (filter: {limit: 100 offset: " + str(i * 100) + "}) {mods {name short_description}}}"}
+            {'query': 'query {getMods (filter: {limit: ' + num_items + '}) {mods {name short_description}}}'}
         ))
         mods.extend(json.loads(response.text)['data']['getMods']['mods'])
+
     return jsonify(mods), 200
 
 
 # Search for a mod
 @app.route('/ficsit/search', methods=['POST'])
 def search_for_mod():
-    request_data = request.get_json(force=True)
-    search_term = request_data['searchTerm']
-
     mods = []
-    for i in range(0, math.ceil((mod_count() / 100) + 1)):
+    search_term = request.get_json(force=True)['searchTerm']
+    num_items = int(request.get_json(force=True)['numItems'])
+
+    if num_items == -1:
+        for i in range(0, math.floor(mod_count() / 100) + 1):
+            response = make_query(json.dumps(
+                {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + f' search: "{search_term}"' + '}) {mods {name short_description}}}'}
+            ))
+            mods.extend(json.loads(response.text)['data']['getMods']['mods'])
+    elif num_items <= 100:
         response = make_query(json.dumps(
-            {"query": "query {getMods (filter: {limit: 100 offset: " + str(i * 100) + f''' search: "{search_term}"''' + "}) {mods {name short_description}}}"}
+            {'query': 'query {getMods (filter: {limit: ' + str(num_items) + f' search: "{search_term}"' + '}) {mods {name short_description}}}'}
         ))
         mods.extend(json.loads(response.text)['data']['getMods']['mods'])
     return jsonify(mods), 200
