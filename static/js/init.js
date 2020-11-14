@@ -36,13 +36,13 @@ $(function () {
     });
 
     //Logout handler
-    $('#logout').on('click', function() {
+    $('#logout').on('click', function () {
         $.ajax({
             type: 'GET',
             url: 'logout',
             success: function () {
                 setMessage('Logged out.', messageType.SUCCESS)
-                setTimeout(function (){
+                setTimeout(function () {
                     location.reload();
                 }, 1000);
             },
@@ -64,7 +64,7 @@ $(function () {
                 $('#newUsername').val('');
                 //Show success message
                 setMessage('Username changed. Reloading page.', messageType.SUCCESS)
-                setTimeout(function (){
+                setTimeout(function () {
                     location.reload();
                 }, 1500);
             },
@@ -103,7 +103,7 @@ $(function () {
             type: 'DELETE',
             success: function () {
                 setMessage('Your account was deleted.', messageType.SUCCESS);
-                setTimeout(function (){
+                setTimeout(function () {
                     location.reload();
                 }, 1000);
             },
@@ -121,7 +121,7 @@ $(function () {
             url: '/ficsit/search',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({searchTerm: $("#searchTerm").val(), numItems: $('#numberOfItems').val() }),
+            data: JSON.stringify({searchTerm: $("#searchTerm").val(), numItems: $('#numberOfItems').val()}),
             success: function (data) {
                 $('#modTable tbody').empty();
                 data.forEach(fillTableData);
@@ -154,7 +154,7 @@ function populateMods() {
     $.ajax({
         url: '/ficsit/get_mods',
         type: 'POST',
-        data: JSON.stringify({ numItems: $('#numberOfItems').val() }),
+        data: JSON.stringify({numItems: $('#numberOfItems').val()}),
         success: function (data) {
             $('#modTable tbody').empty();
             data.forEach(fillTableData);
@@ -167,7 +167,7 @@ function populateMods() {
     });
 }
 
-function fillTableData (element, index) {
+function fillTableData(element, index) {
     if (element['versions'].length >= 1) {
         $('#modTable tbody').append(`
             <tr>
@@ -189,7 +189,7 @@ function fillTableData (element, index) {
     }
 }
 
-function setMessage (message, type) {
+function setMessage(message, type) {
     if (type === messageType.SUCCESS) {
         $('#message').removeClass('text-success')
             .removeClass('text-warning')
