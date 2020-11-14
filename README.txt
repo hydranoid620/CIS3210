@@ -29,6 +29,10 @@ Usage:
 			- Click the dropdown menu at the top right of the table
 			- Select the number of items you want to display in the table
 
+		-Downloading a mod
+		    - Click the blue download button to the right of the mod you want to download
+		    - Mods that are not available for download have their download button disabled
+
 To run the program:
     - Extract the submitted .tar file to a folder
     - In that folder, run `flask run --host=0.0.0.0 --port=17025`
