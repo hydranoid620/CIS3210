@@ -139,12 +139,12 @@ def get_mods():
     if int(num_items) == -1:
         for i in range(0, math.floor(mod_count() / 100) + 1):
             response = make_query(json.dumps(
-                {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + '}) {mods {name short_description}}}'}
+                {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + '}) {mods {name id short_description versions{link}}}}'}
             ))
             mods.extend(json.loads(response.text)['data']['getMods']['mods'])
     elif int(num_items) <= 100:
         response = make_query(json.dumps(
-            {'query': 'query {getMods (filter: {limit: ' + num_items + '}) {mods {name short_description}}}'}
+            {'query': 'query {getMods (filter: {limit: ' + num_items + '}) {mods {name id short_description versions{link}}}}'}
         ))
         mods.extend(json.loads(response.text)['data']['getMods']['mods'])
 
@@ -161,12 +161,12 @@ def search_for_mod():
     if num_items == -1:
         for i in range(0, math.floor(mod_count() / 100) + 1):
             response = make_query(json.dumps(
-                {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + f' search: "{search_term}"' + '}) {mods {name short_description}}}'}
+                {'query': 'query {getMods (filter: {limit: 100 offset: ' + str(i * 100) + f' search: "{search_term}"' + '}) {mods {name id short_description versions{link}}}}'}
             ))
             mods.extend(json.loads(response.text)['data']['getMods']['mods'])
     elif num_items <= 100:
         response = make_query(json.dumps(
-            {'query': 'query {getMods (filter: {limit: ' + str(num_items) + f' search: "{search_term}"' + '}) {mods {name short_description}}}'}
+            {'query': 'query {getMods (filter: {limit: ' + str(num_items) + f' search: "{search_term}"' + '}) {mods {name id short_description versions{link}}}}'}
         ))
         mods.extend(json.loads(response.text)['data']['getMods']['mods'])
     return jsonify(mods), 200

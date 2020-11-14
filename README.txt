@@ -25,6 +25,10 @@ Usage:
         - Resetting the list
             - Click the red 'Clear Search' button on top of the table to clear any searched items in the table and restore the full list
 
+		-Setting number of items
+			- Click the dropdown menu at the top right of the table
+			- Select the number of items you want to display in the table
+
 To run the program:
     - Extract the submitted .tar file to a folder
     - In that folder, run `flask run --host=0.0.0.0 --port=17025`

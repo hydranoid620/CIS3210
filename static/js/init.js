@@ -1,3 +1,8 @@
+const messageType = {
+    SUCCESS: 1,
+    ERROR: 2
+}
+
 $(function () {
     //Login or register a user
     $('#submitLogin').on('click', function () {
@@ -8,12 +13,12 @@ $(function () {
             data: JSON.stringify({username: $("#usernameInput").val(), password: $("#passwordInput").val()}),
             success: function (data) {
                 if (data['newAccount']) {
-                    setMessage('Account created.', 1);
+                    setMessage('Account created.', messageType.SUCCESS);
                     setTimeout(function () {
                         location.reload();
                     }, 1000);
                 } else {
-                    setMessage('Logged in.', 1);
+                    setMessage('Logged in.', messageType.SUCCESS);
                     setTimeout(function () {
                         location.reload();
                     }, 1000);
@@ -21,9 +26,9 @@ $(function () {
             },
             error: function (jqXHR) {
                 if (jqXHR.status === 401) {
-                    setMessage('Invalid login entered.', 2)
+                    setMessage('Invalid login entered.', messageType.ERROR)
                 } else {
-                    setMessage('There was an error with that request. Check the console for details.', 2);
+                    setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
                     console.log(jqXHR);
                 }
             }
@@ -36,13 +41,13 @@ $(function () {
             type: 'GET',
             url: 'logout',
             success: function () {
-                setMessage('Logged out.', 1)
+                setMessage('Logged out.', messageType.SUCCESS)
                 setTimeout(function (){
                     location.reload();
                 }, 1000);
             },
             error: function (jqXHR) {
-                setMessage('There was an error with that request. Check the console for details.');
+                setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
                 console.log(jqXHR)
             }
         });
@@ -58,14 +63,14 @@ $(function () {
                 //Clear input fields
                 $('#newUsername').val('');
                 //Show success message
-                setMessage('Username changed. Reloading page.', 1)
+                setMessage('Username changed. Reloading page.', messageType.SUCCESS)
                 setTimeout(function (){
                     location.reload();
                 }, 1500);
             },
             error: function (jqXHR) {
                 //Show error message
-                setMessage('There was an error with that request. Check the console for details.', 2);
+                setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
                 console.log(jqXHR);
             }
         });
@@ -81,11 +86,11 @@ $(function () {
                 //Clear input fields
                 $('#newPassword').val('');
                 //Show success message
-                setMessage('Password changed successfully.', 1)
+                setMessage('Password changed successfully.', messageType.SUCCESS)
             },
             error: function (jqXHR) {
                 //Show error message
-                setMessage('There was an error with that request. Check the console for details.', 2);
+                setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
                 console.log(jqXHR);
             }
         });
@@ -97,14 +102,14 @@ $(function () {
             url: 'users',
             type: 'DELETE',
             success: function () {
-                setMessage('Your account was deleted.', 1);
+                setMessage('Your account was deleted.', messageType.SUCCESS);
                 setTimeout(function (){
                     location.reload();
                 }, 1000);
             },
             error: function (jqXHR) {
                 //Display status message
-                setMessage('There was an error with that request. Check the console for details.', 2);
+                setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
                 console.log(jqXHR);
             }
         });
@@ -123,7 +128,7 @@ $(function () {
             },
             error: function (jqXHR) {
                 //Display status message
-                setMessage('There was an error searching. Check the console for details.', 2);
+                setMessage('There was an error searching. Check the console for details.', messageType.ERROR);
                 console.log(jqXHR);
             }
         });
@@ -156,26 +161,47 @@ function populateMods() {
         },
         error: function (jqXHR) {
             //Display status message
-            setMessage('There was an error building the table. Check the console for details.', 2);
+            setMessage('There was an error building the table. Check the console for details.', messageType.ERROR);
             console.log(jqXHR);
         }
     });
 }
 
 function fillTableData (element, index) {
-    $('#modTable tbody').append(`<tr><th scope='row'>${index + 1}</th><td>${element['name']}</td><td>${element['short_description']}</td></tr>`)
+    if (element['versions'].length >= 1) {
+        $('#modTable tbody').append(`
+            <tr>
+                <td>${index + 1}</td>
+                <td>${element['name']}</td>
+                <td>${element['short_description']}</td>
+                <td><a href="https://api.ficsit.app${element['versions'][0]['link']}" class="btn btn-primary">Download</a></td>
+            </tr>
+        `);
+    } else {
+        $('#modTable tbody').append(`
+            <tr>
+                <td>${index + 1}</td>
+                <td>${element['name']}</td>
+                <td>${element['short_description']}</td>
+                <td><a class="btn btn-primary disabled">Download</a></td>
+            </tr>
+        `);
+    }
 }
 
 function setMessage (message, type) {
-    if (type === 1) {
+    if (type === messageType.SUCCESS) {
         $('#message').removeClass('text-success')
             .removeClass('text-warning')
             .addClass('text-success')
             .text(message);
-    } else {
+    } else if (type === messageType.ERROR) {
         $('#message').removeClass('text-success')
             .removeClass('text-warning')
             .addClass('text-warning')
             .text(message);
+    } else {
+        console.log("Unknown type: " + type.toString())
+        console.log("Message: " + message.toString())
     }
 }
