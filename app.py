@@ -170,3 +170,10 @@ def search_for_mod():
         ))
         mods.extend(json.loads(response.text)['data']['getMods']['mods'])
     return jsonify(mods), 200
+
+
+# Get details for a specific mod
+@app.route('/ficsit/<mod_id>', methods=['GET'])
+def mod_details(mod_id):
+    response = make_query(json.dumps({'query': 'query {getMod(modId: "' + mod_id + '") {versions{link} full_description logo hotness downloads popularity}}'}))
+    return jsonify(json.loads(response.text)['data']['getMod']), 200

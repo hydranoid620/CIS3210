@@ -14,22 +14,18 @@ $(function () {
             success: function (data) {
                 if (data['newAccount']) {
                     setMessage('Account created.', messageType.SUCCESS);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
+                    setTimeout(function () { location.reload(); }, 750);
                 } else {
                     setMessage('Logged in.', messageType.SUCCESS);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
+                    setTimeout(function () { location.reload(); }, 750);
                 }
             },
-            error: function (jqXHR) {
-                if (jqXHR.status === 401) {
+            error: function (data) {
+                if (data.status === 401) {
                     setMessage('Invalid login entered.', messageType.ERROR)
                 } else {
                     setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
-                    console.log(jqXHR);
+                    console.log(data);
                 }
             }
         });
@@ -42,13 +38,11 @@ $(function () {
             url: 'logout',
             success: function () {
                 setMessage('Logged out.', messageType.SUCCESS)
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
+                setTimeout(function () { location.reload(); }, 750);
             },
-            error: function (jqXHR) {
+            error: function (data) {
                 setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
-                console.log(jqXHR)
+                console.log(data)
             }
         });
     });
@@ -64,14 +58,12 @@ $(function () {
                 $('#newUsername').val('');
                 //Show success message
                 setMessage('Username changed. Reloading page.', messageType.SUCCESS)
-                setTimeout(function () {
-                    location.reload();
-                }, 1500);
+                setTimeout(function () { location.reload(); }, 1250);
             },
-            error: function (jqXHR) {
+            error: function (data) {
                 //Show error message
                 setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
-                console.log(jqXHR);
+                console.log(data);
             }
         });
     });
@@ -88,10 +80,10 @@ $(function () {
                 //Show success message
                 setMessage('Password changed successfully.', messageType.SUCCESS)
             },
-            error: function (jqXHR) {
+            error: function (data) {
                 //Show error message
                 setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
-                console.log(jqXHR);
+                console.log(data);
             }
         });
     });
@@ -103,14 +95,12 @@ $(function () {
             type: 'DELETE',
             success: function () {
                 setMessage('Your account was deleted.', messageType.SUCCESS);
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
+                setTimeout(function () { location.reload(); }, 750);
             },
-            error: function (jqXHR) {
+            error: function (data) {
                 //Display status message
                 setMessage('There was an error with that request. Check the console for details.', messageType.ERROR);
-                console.log(jqXHR);
+                console.log(data);
             }
         });
     });
@@ -124,26 +114,27 @@ $(function () {
             data: JSON.stringify({searchTerm: $("#searchTerm").val(), numItems: $('#numberOfItems').val()}),
             success: function (data) {
                 $('#modTable tbody').empty();
-                data.forEach(fillTableData);
+                data.forEach(function (element, index) {
+                    addElementToTable('#modTable tbody', element, index);
+                });
+                $('.saveMod').on("click", null, null, showModDetails);
             },
-            error: function (jqXHR) {
+            error: function (data) {
                 //Display status message
                 setMessage('There was an error searching. Check the console for details.', messageType.ERROR);
-                console.log(jqXHR);
+                console.log(data);
             }
         });
     });
 
     //Reset search
-    $("#resetSearch").on("click", function () {
+    $("#resetSearch").on('click', function () {
         populateMods()
         $("#searchTerm").val("")
     });
 
     //Update list when number of items changed
-    $('#numberOfItems').on('change', function () {
-        populateMods();
-    })
+    $('#numberOfItems').on('change', null, null, populateMods);
 
     populateMods()
     console.log("Name: Nicholas Rosati\nStudent Number: 1037025");
@@ -157,36 +148,55 @@ function populateMods() {
         data: JSON.stringify({numItems: $('#numberOfItems').val()}),
         success: function (data) {
             $('#modTable tbody').empty();
-            data.forEach(fillTableData);
+            data.forEach(function (element, index) { addElementToTable('#modTable tbody', element, index); });
+            $('.showDetails').on("click", null, null, showModDetails);
         },
-        error: function (jqXHR) {
+        error: function (data) {
             //Display status message
-            setMessage('There was an error building the table. Check the console for details.', messageType.ERROR);
-            console.log(jqXHR);
+            setMessage('There was an error building the mods table. Check the console for details.', messageType.ERROR);
+            console.log(data);
         }
     });
 }
 
-function fillTableData(element, index) {
+function showModDetails(event) {
+    $('#detailsContainer').removeAttr("hidden");
+    $.ajax({
+        url: '/ficsit/' + event.target.id,
+        type: 'GET',
+        success: function (data) {
+            $('#detailsImage')[0].src = data['logo'];
+            $('#downloadStats').text(`Downloads: ${data['downloads']}`);
+            $('#hotnessStats').text(`Hotness: ${data['hotness']}`);
+            $('#popularityStats').text(`Popularity: ${data['popularity']}`);
+            $('#detailsDescription').text(data['full_description']);
+            $('#detailsDownload').attr('href', 'https://api.ficsit.app' + data['versions'][0]['link']);
+        },
+        error: function (data) {
+            setMessage('There was an error setting the details pane. Check the console for details.', messageType.ERROR);
+            console.log(data);
+        }
+    });
+}
+
+function addElementToTable(selector, element, index) {
+    //Base piece to add to the table
+    let newElement = `<tr><td>${index + 1}</td>
+                          <td>${element['name']}</td>
+                          <td>${element['short_description']}</td>`;
+
+    //Add a functional download button to the mod only if there is a link to download it
     if (element['versions'].length >= 1) {
-        $('#modTable tbody').append(`
-            <tr>
-                <td>${index + 1}</td>
-                <td>${element['name']}</td>
-                <td>${element['short_description']}</td>
-                <td><a href="https://api.ficsit.app${element['versions'][0]['link']}" class="btn btn-primary">Download</a></td>
-            </tr>
-        `);
+        newElement += `<td><a href="https://api.ficsit.app${element['versions'][0]['link']}" class="btn btn-primary">Download</a></td>`;
     } else {
-        $('#modTable tbody').append(`
-            <tr>
-                <td>${index + 1}</td>
-                <td>${element['name']}</td>
-                <td>${element['short_description']}</td>
-                <td><a class="btn btn-primary disabled">Download</a></td>
-            </tr>
-        `);
+        newElement += `<td><a class="btn btn-primary disabled">Download</a></td>`;
     }
+
+    //Add the details button and cap off the table record tag
+    newElement += `<td class="text-center"><button class="showDetails btn btn-info" id="${element['id']}">•</button></td></tr>`;
+
+    //Put new element into DOM
+    $(selector).append(newElement);
 }
 
 function setMessage(message, type) {

@@ -96,11 +96,11 @@
                         <div class="col-2">
                             <label for="numberOfItems"># of Items</label>
                             <select class="custom-select" id="numberOfItems">
-                                <option value="10">10</option>
+                                <option selected="selected" value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
-                                <option selected="selected" value="-1">All</option>
+                                <option value="-1">All</option>
                             </select>
                         </div>
                     </div>
@@ -115,10 +115,36 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Short Description</th>
                                 <th scope="col" style="z-index: 1">Download</th>
+                                <th scope="col">Details</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Details pane -->
+            <div class="row mt-5" hidden id="detailsContainer">
+                <div class="border w-100" id="modDetails">
+                    <div class="row">
+                        <div class="col-sm-3" >
+                            <img style="width: 250px; height: auto;" id="detailsImage" src="" alt="Logo picture for the selected mod">
+                        </div>
+                        <div class="col-2">
+                            <a class="row" id="downloadStats"></a>
+                            <a class="row">​</a>
+                            <a class="row" id="hotnessStats"></a>
+                            <a class="row">​</a>
+                            <a class="row" id="popularityStats"></a>
+                        </div>
+                        <div class="col-5" style="max-height: 250px; overflow: scroll;">
+                            <a id="detailsDescription"></a>
+                        </div>
+                        <div class="col my-auto text-center">
+<!--                            <button id="detailsDownload" class="btn btn-primary" value="">Download</button>-->
+                            <a href="" id="detailsDownload" class="btn btn-primary">Download</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
