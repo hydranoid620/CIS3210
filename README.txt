@@ -33,6 +33,10 @@ Usage:
 		    - Click the blue download button to the right of the mod you want to download
 		    - Mods that are not available for download have their download button disabled
 
+    - View the details for a mod
+        - Click the info dot button to the right of a download button on a mod
+        - View more information on a mod under the mod table
+
 To run the program:
     - Extract the submitted .tar file to a folder
     - In that folder, run `flask run --host=0.0.0.0 --port=17025`
